@@ -1,0 +1,322 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9AABDE961543794200371B88 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDE951543794200371B88 /* UIKit.framework */; };
+		9AABDE981543794200371B88 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDE971543794200371B88 /* Foundation.framework */; };
+		9AABDE9A1543794200371B88 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDE991543794200371B88 /* CoreGraphics.framework */; };
+		9AABDE9C1543794200371B88 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDE9B1543794200371B88 /* GLKit.framework */; };
+		9AABDE9E1543794200371B88 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDE9D1543794200371B88 /* OpenGLES.framework */; };
+		9AABDEA41543794200371B88 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDEA21543794200371B88 /* InfoPlist.strings */; };
+		9AABDEA61543794200371B88 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AABDEA51543794200371B88 /* main.m */; };
+		9AABDEAA1543794200371B88 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9AABDEA91543794200371B88 /* AppDelegate.mm */; };
+		9AABDEAC1543794200371B88 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDEAB1543794200371B88 /* Shader.fsh */; };
+		9AABDEAE1543794200371B88 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDEAD1543794200371B88 /* Shader.vsh */; };
+		9AABDEB11543794200371B88 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9AABDEB01543794200371B88 /* ViewController.mm */; };
+		9AABDEB41543794300371B88 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDEB21543794200371B88 /* ViewController_iPhone.xib */; };
+		9AABDEB71543794300371B88 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDEB51543794300371B88 /* ViewController_iPad.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9AABDE911543794200371B88 /* SierpinskiGasket.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = SierpinskiGasket.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AABDE951543794200371B88 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9AABDE971543794200371B88 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9AABDE991543794200371B88 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9AABDE9B1543794200371B88 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		9AABDE9D1543794200371B88 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		9AABDEA11543794200371B88 /* SierpinskiGasket-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "SierpinskiGasket-Info.plist"; sourceTree = "<group>"; };
+		9AABDEA31543794200371B88 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9AABDEA51543794200371B88 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9AABDEA71543794200371B88 /* SierpinskiGasket-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "SierpinskiGasket-Prefix.pch"; sourceTree = "<group>"; };
+		9AABDEA81543794200371B88 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9AABDEA91543794200371B88 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		9AABDEAB1543794200371B88 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
+		9AABDEAD1543794200371B88 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		9AABDEAF1543794200371B88 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9AABDEB01543794200371B88 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		9AABDEB31543794300371B88 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
+		9AABDEB61543794300371B88 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
+		9AABDEBD1543815C00371B88 /* vec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = vec.h; sourceTree = "<group>"; };
+		9AABDEBE1543816900371B88 /* Angel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Angel.h; sourceTree = "<group>"; };
+		9AABDEC3154384AE00371B88 /* mat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mat.h; sourceTree = "<group>"; };
+		9AABDEC51543851F00371B88 /* CheckError.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CheckError.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9AABDE8E1543794200371B88 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AABDE961543794200371B88 /* UIKit.framework in Frameworks */,
+				9AABDE981543794200371B88 /* Foundation.framework in Frameworks */,
+				9AABDE9A1543794200371B88 /* CoreGraphics.framework in Frameworks */,
+				9AABDE9C1543794200371B88 /* GLKit.framework in Frameworks */,
+				9AABDE9E1543794200371B88 /* OpenGLES.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9AABDE861543794200371B88 = {
+			isa = PBXGroup;
+			children = (
+				9AABDE9F1543794200371B88 /* SierpinskiGasket */,
+				9AABDE941543794200371B88 /* Frameworks */,
+				9AABDE921543794200371B88 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9AABDE921543794200371B88 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9AABDE911543794200371B88 /* SierpinskiGasket.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9AABDE941543794200371B88 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9AABDE951543794200371B88 /* UIKit.framework */,
+				9AABDE971543794200371B88 /* Foundation.framework */,
+				9AABDE991543794200371B88 /* CoreGraphics.framework */,
+				9AABDE9B1543794200371B88 /* GLKit.framework */,
+				9AABDE9D1543794200371B88 /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9AABDE9F1543794200371B88 /* SierpinskiGasket */ = {
+			isa = PBXGroup;
+			children = (
+				9AABDEC51543851F00371B88 /* CheckError.h */,
+				9AABDEC3154384AE00371B88 /* mat.h */,
+				9AABDEBE1543816900371B88 /* Angel.h */,
+				9AABDEA81543794200371B88 /* AppDelegate.h */,
+				9AABDEBD1543815C00371B88 /* vec.h */,
+				9AABDEA91543794200371B88 /* AppDelegate.mm */,
+				9AABDEAB1543794200371B88 /* Shader.fsh */,
+				9AABDEAD1543794200371B88 /* Shader.vsh */,
+				9AABDEAF1543794200371B88 /* ViewController.h */,
+				9AABDEB01543794200371B88 /* ViewController.mm */,
+				9AABDEB21543794200371B88 /* ViewController_iPhone.xib */,
+				9AABDEB51543794300371B88 /* ViewController_iPad.xib */,
+				9AABDEA01543794200371B88 /* Supporting Files */,
+			);
+			path = SierpinskiGasket;
+			sourceTree = "<group>";
+		};
+		9AABDEA01543794200371B88 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9AABDEA11543794200371B88 /* SierpinskiGasket-Info.plist */,
+				9AABDEA21543794200371B88 /* InfoPlist.strings */,
+				9AABDEA51543794200371B88 /* main.m */,
+				9AABDEA71543794200371B88 /* SierpinskiGasket-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9AABDE901543794200371B88 /* SierpinskiGasket */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AABDEBA1543794300371B88 /* Build configuration list for PBXNativeTarget "SierpinskiGasket" */;
+			buildPhases = (
+				9AABDE8D1543794200371B88 /* Sources */,
+				9AABDE8E1543794200371B88 /* Frameworks */,
+				9AABDE8F1543794200371B88 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = SierpinskiGasket;
+			productName = SierpinskiGasket;
+			productReference = 9AABDE911543794200371B88 /* SierpinskiGasket.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9AABDE881543794200371B88 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 9AABDE8B1543794200371B88 /* Build configuration list for PBXProject "SierpinskiGasket" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9AABDE861543794200371B88;
+			productRefGroup = 9AABDE921543794200371B88 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9AABDE901543794200371B88 /* SierpinskiGasket */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9AABDE8F1543794200371B88 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AABDEA41543794200371B88 /* InfoPlist.strings in Resources */,
+				9AABDEAC1543794200371B88 /* Shader.fsh in Resources */,
+				9AABDEAE1543794200371B88 /* Shader.vsh in Resources */,
+				9AABDEB41543794300371B88 /* ViewController_iPhone.xib in Resources */,
+				9AABDEB71543794300371B88 /* ViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9AABDE8D1543794200371B88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AABDEA61543794200371B88 /* main.m in Sources */,
+				9AABDEAA1543794200371B88 /* AppDelegate.mm in Sources */,
+				9AABDEB11543794200371B88 /* ViewController.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9AABDEA21543794200371B88 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9AABDEA31543794200371B88 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9AABDEB21543794200371B88 /* ViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9AABDEB31543794300371B88 /* en */,
+			);
+			name = ViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		9AABDEB51543794300371B88 /* ViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9AABDEB61543794300371B88 /* en */,
+			);
+			name = ViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9AABDEB81543794300371B88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9AABDEB91543794300371B88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9AABDEBB1543794300371B88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SierpinskiGasket/SierpinskiGasket-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "SierpinskiGasket/SierpinskiGasket-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9AABDEBC1543794300371B88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "SierpinskiGasket/SierpinskiGasket-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "SierpinskiGasket/SierpinskiGasket-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9AABDE8B1543794200371B88 /* Build configuration list for PBXProject "SierpinskiGasket" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AABDEB81543794300371B88 /* Debug */,
+				9AABDEB91543794300371B88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AABDEBA1543794300371B88 /* Build configuration list for PBXNativeTarget "SierpinskiGasket" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AABDEBB1543794300371B88 /* Debug */,
+				9AABDEBC1543794300371B88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9AABDE881543794200371B88 /* Project object */;
+}
