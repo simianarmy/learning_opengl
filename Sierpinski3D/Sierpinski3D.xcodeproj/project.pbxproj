@@ -1,0 +1,313 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9AABDF0D1544DB4D00371B88 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDF0C1544DB4D00371B88 /* UIKit.framework */; };
+		9AABDF0F1544DB4D00371B88 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDF0E1544DB4D00371B88 /* Foundation.framework */; };
+		9AABDF111544DB4D00371B88 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDF101544DB4D00371B88 /* CoreGraphics.framework */; };
+		9AABDF131544DB4D00371B88 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDF121544DB4D00371B88 /* GLKit.framework */; };
+		9AABDF151544DB4D00371B88 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9AABDF141544DB4D00371B88 /* OpenGLES.framework */; };
+		9AABDF1B1544DB4D00371B88 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDF191544DB4D00371B88 /* InfoPlist.strings */; };
+		9AABDF1D1544DB4D00371B88 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9AABDF1C1544DB4D00371B88 /* main.m */; };
+		9AABDF211544DB4D00371B88 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9AABDF201544DB4D00371B88 /* AppDelegate.mm */; };
+		9AABDF231544DB4D00371B88 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDF221544DB4D00371B88 /* Shader.fsh */; };
+		9AABDF251544DB4D00371B88 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDF241544DB4D00371B88 /* Shader.vsh */; };
+		9AABDF281544DB4D00371B88 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9AABDF271544DB4D00371B88 /* ViewController.mm */; };
+		9AABDF2B1544DB4E00371B88 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDF291544DB4E00371B88 /* ViewController_iPhone.xib */; };
+		9AABDF2E1544DB4E00371B88 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9AABDF2C1544DB4E00371B88 /* ViewController_iPad.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9AABDF081544DB4D00371B88 /* Sierpinski3D.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Sierpinski3D.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9AABDF0C1544DB4D00371B88 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9AABDF0E1544DB4D00371B88 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9AABDF101544DB4D00371B88 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9AABDF121544DB4D00371B88 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		9AABDF141544DB4D00371B88 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		9AABDF181544DB4D00371B88 /* Sierpinski3D-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Sierpinski3D-Info.plist"; sourceTree = "<group>"; };
+		9AABDF1A1544DB4D00371B88 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9AABDF1C1544DB4D00371B88 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9AABDF1E1544DB4D00371B88 /* Sierpinski3D-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Sierpinski3D-Prefix.pch"; sourceTree = "<group>"; };
+		9AABDF1F1544DB4D00371B88 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9AABDF201544DB4D00371B88 /* AppDelegate.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = AppDelegate.mm; sourceTree = "<group>"; };
+		9AABDF221544DB4D00371B88 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
+		9AABDF241544DB4D00371B88 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		9AABDF261544DB4D00371B88 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9AABDF271544DB4D00371B88 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		9AABDF2A1544DB4E00371B88 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
+		9AABDF2D1544DB4E00371B88 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9AABDF051544DB4D00371B88 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AABDF0D1544DB4D00371B88 /* UIKit.framework in Frameworks */,
+				9AABDF0F1544DB4D00371B88 /* Foundation.framework in Frameworks */,
+				9AABDF111544DB4D00371B88 /* CoreGraphics.framework in Frameworks */,
+				9AABDF131544DB4D00371B88 /* GLKit.framework in Frameworks */,
+				9AABDF151544DB4D00371B88 /* OpenGLES.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9AABDEFD1544DB4D00371B88 = {
+			isa = PBXGroup;
+			children = (
+				9AABDF161544DB4D00371B88 /* Sierpinski3D */,
+				9AABDF0B1544DB4D00371B88 /* Frameworks */,
+				9AABDF091544DB4D00371B88 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9AABDF091544DB4D00371B88 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9AABDF081544DB4D00371B88 /* Sierpinski3D.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9AABDF0B1544DB4D00371B88 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9AABDF0C1544DB4D00371B88 /* UIKit.framework */,
+				9AABDF0E1544DB4D00371B88 /* Foundation.framework */,
+				9AABDF101544DB4D00371B88 /* CoreGraphics.framework */,
+				9AABDF121544DB4D00371B88 /* GLKit.framework */,
+				9AABDF141544DB4D00371B88 /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9AABDF161544DB4D00371B88 /* Sierpinski3D */ = {
+			isa = PBXGroup;
+			children = (
+				9AABDF1F1544DB4D00371B88 /* AppDelegate.h */,
+				9AABDF201544DB4D00371B88 /* AppDelegate.mm */,
+				9AABDF221544DB4D00371B88 /* Shader.fsh */,
+				9AABDF241544DB4D00371B88 /* Shader.vsh */,
+				9AABDF261544DB4D00371B88 /* ViewController.h */,
+				9AABDF271544DB4D00371B88 /* ViewController.mm */,
+				9AABDF291544DB4E00371B88 /* ViewController_iPhone.xib */,
+				9AABDF2C1544DB4E00371B88 /* ViewController_iPad.xib */,
+				9AABDF171544DB4D00371B88 /* Supporting Files */,
+			);
+			path = Sierpinski3D;
+			sourceTree = "<group>";
+		};
+		9AABDF171544DB4D00371B88 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9AABDF181544DB4D00371B88 /* Sierpinski3D-Info.plist */,
+				9AABDF191544DB4D00371B88 /* InfoPlist.strings */,
+				9AABDF1C1544DB4D00371B88 /* main.m */,
+				9AABDF1E1544DB4D00371B88 /* Sierpinski3D-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9AABDF071544DB4D00371B88 /* Sierpinski3D */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9AABDF311544DB4E00371B88 /* Build configuration list for PBXNativeTarget "Sierpinski3D" */;
+			buildPhases = (
+				9AABDF041544DB4D00371B88 /* Sources */,
+				9AABDF051544DB4D00371B88 /* Frameworks */,
+				9AABDF061544DB4D00371B88 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Sierpinski3D;
+			productName = Sierpinski3D;
+			productReference = 9AABDF081544DB4D00371B88 /* Sierpinski3D.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9AABDEFF1544DB4D00371B88 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 9AABDF021544DB4D00371B88 /* Build configuration list for PBXProject "Sierpinski3D" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9AABDEFD1544DB4D00371B88;
+			productRefGroup = 9AABDF091544DB4D00371B88 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9AABDF071544DB4D00371B88 /* Sierpinski3D */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9AABDF061544DB4D00371B88 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AABDF1B1544DB4D00371B88 /* InfoPlist.strings in Resources */,
+				9AABDF231544DB4D00371B88 /* Shader.fsh in Resources */,
+				9AABDF251544DB4D00371B88 /* Shader.vsh in Resources */,
+				9AABDF2B1544DB4E00371B88 /* ViewController_iPhone.xib in Resources */,
+				9AABDF2E1544DB4E00371B88 /* ViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9AABDF041544DB4D00371B88 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9AABDF1D1544DB4D00371B88 /* main.m in Sources */,
+				9AABDF211544DB4D00371B88 /* AppDelegate.mm in Sources */,
+				9AABDF281544DB4D00371B88 /* ViewController.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9AABDF191544DB4D00371B88 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9AABDF1A1544DB4D00371B88 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9AABDF291544DB4E00371B88 /* ViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9AABDF2A1544DB4E00371B88 /* en */,
+			);
+			name = ViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		9AABDF2C1544DB4E00371B88 /* ViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9AABDF2D1544DB4E00371B88 /* en */,
+			);
+			name = ViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9AABDF2F1544DB4E00371B88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9AABDF301544DB4E00371B88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9AABDF321544DB4E00371B88 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Sierpinski3D/Sierpinski3D-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "Sierpinski3D/Sierpinski3D-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9AABDF331544DB4E00371B88 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Sierpinski3D/Sierpinski3D-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "Sierpinski3D/Sierpinski3D-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9AABDF021544DB4D00371B88 /* Build configuration list for PBXProject "Sierpinski3D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AABDF2F1544DB4E00371B88 /* Debug */,
+				9AABDF301544DB4E00371B88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9AABDF311544DB4E00371B88 /* Build configuration list for PBXNativeTarget "Sierpinski3D" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9AABDF321544DB4E00371B88 /* Debug */,
+				9AABDF331544DB4E00371B88 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9AABDEFF1544DB4D00371B88 /* Project object */;
+}
