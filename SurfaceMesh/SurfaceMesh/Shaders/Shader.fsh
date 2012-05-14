@@ -7,9 +7,8 @@
 //
 
 varying lowp vec4 colorVarying;
-uniform vec4 fcolor;
 
 void main()
 {
-    gl_FragColor = fcolor;
+    gl_FragColor = colorVarying;
 }

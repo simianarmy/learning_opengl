@@ -91,8 +91,10 @@ void gen_triangles()
     int i, j;
     int n, m;
     float fn, fm, fmax;
+    NSString *fpath = [[NSBundle mainBundle] pathForResource:@"honolulu" ofType:@"raw"];
+
     FILE *fp;
-    fp = fopen("honolulu.raw", "r");
+    fp = fopen([fpath UTF8String], "r");
     fscanf(fp, "%d %d", &n, &m);
     fn = n;
     fm = m;
@@ -224,7 +226,7 @@ void gen_triangles()
     _color_loc = glGetUniformLocation(_program, "fcolor");
     
     //glBindVertexArrayOES(0);
-    glEnable(GL_POLYGON_OFFSET_FILL|GL_DEPTH_TEST);
+    glEnable(GL_POLYGON_OFFSET_FILL|GL_DEPTH_TEST|GL_CULL_FACE);
     glPolygonOffset(1.0, 1.0);
     glClearColor(1.0, 1.0, 1.0, 1.0);
 }
@@ -335,9 +337,12 @@ void gen_triangles()
     // LINEs and POINTs are supported as render primitives (but not as polygon render modes).
     // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     // TODO: play with glCullFace() and glFrontFace() to test
+    /*
+    glCullFace(GL_FRONT_AND_BACK);
     glUniform4fv(_color_loc, 1, white.v);
     glDrawArrays(GL_TRIANGLES, 0, 3*435*464*2);
-    
+    */
+    glCullFace(GL_BACK);
     glUniform4fv(_color_loc, 1, black.v);
     glDrawArrays(GL_TRIANGLES, 0, 3*435*464*2);
     
