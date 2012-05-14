@@ -337,14 +337,20 @@ void gen_triangles()
     // LINEs and POINTs are supported as render primitives (but not as polygon render modes).
     // glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
     // TODO: play with glCullFace() and glFrontFace() to test
-    /*
+    /* ORIGINAL CODE
+     glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+     glUniform4fv(color_loc, 1, white);
+     glDrawArrays(GL_TRIANGLES, 0, 3*435*464*2); 
+     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+     glUniform4fv(color_loc, 1, black);
+     glDrawArrays(GL_TRIANGLES, 0, 3*435*464*2); 
+     */
     glCullFace(GL_FRONT_AND_BACK);
     glUniform4fv(_color_loc, 1, white.v);
     glDrawArrays(GL_TRIANGLES, 0, 3*435*464*2);
-    */
-    glCullFace(GL_BACK);
+
     glUniform4fv(_color_loc, 1, black.v);
-    glDrawArrays(GL_TRIANGLES, 0, 3*435*464*2);
+    glDrawArrays(GL_LINES, 0, 3*435*464*2);
     
     glFlush();
     
