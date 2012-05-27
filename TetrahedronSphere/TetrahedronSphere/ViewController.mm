@@ -1,16 +1,14 @@
 //
 //  ViewController.m
-//  ShadedCube - shading calculations done in-app (quad function), not shaders.
+//  TetrahedronSphere
 //
-//  Created by Marc Mauger on 5/24/12.
+//  Created by Marc Mauger on 5/27/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import "ViewController.h"
-#include "Angel.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
-
 
 // Uniform index.
 enum
@@ -29,129 +27,94 @@ enum
     NUM_ATTRIBUTES
 };
 
-typedef GLKVector3 vec3;
-typedef GLKVector4 vec4;
+#define N 4  // number of subdivisions
+#define M 16*64*3  // number of resulting points
+
+GLsizei w=512, h=512;
+
 typedef GLKVector4 point4;
-typedef GLKVector4 color4;
+typedef GLKVector4 vec4;
 typedef GLKMatrix4 mat4;
 
-const int NumVertices = 36;
+point4 data[M];
 
-int axis = 0;
-float theta[3] = {0.0, 0.0, 0.0};
-float aspect;
+// four equally spaced points on the unit circle
 
-// Vertices of a unit cube centered at origin, sides aligned with axes
-point4  vertices[8] = {GLKVector4Make(-0.5,-0.5,0.5, 1.0),
-    GLKVector4Make(-0.5,0.5,0.5, 1.0),
-    GLKVector4Make(0.5,0.5,0.5, 1.0), 
-    GLKVector4Make(0.5,-0.5,0.5, 1.0), 
-    GLKVector4Make(-0.5,-0.5,-0.5, 1.0),
-    GLKVector4Make(-0.5,0.5,-0.5, 1.0), 
-    GLKVector4Make(0.5,0.5,-0.5, 1.0), 
-    GLKVector4Make(0.5,-0.5,-0.5, 1.0)};
+point4 v[4]= {GLKVector4Make(0.0, 0.0, 1.0, 1.0), 
+    GLKVector4Make(0.0, 0.942809, -0.333333, 1.0),
+    GLKVector4Make(-0.816497, -0.471405, -0.333333, 1.0),
+    GLKVector4Make(0.816497, -0.471405, -0.333333, 1.0)};
 
-vec4 viewer = GLKVector4Make(0.0, 0.0, 1.0, 0.0);
-point4 light_position = GLKVector4Make(0.0, 0.0, -1.0, 0.0);
-color4 light_ambient = GLKVector4Make(0.2, 0.2, 0.2, 1.0);
-color4 light_diffuse = GLKVector4Make(1.0, 1.0, 1.0, 1.0);
-color4 light_specular = GLKVector4Make(1.0, 1.0, 1.0, 1.0);
+float theta = 0.0;
+float phi = 0.0;
+float radius = 2.0;
+static int k =0;
 
-color4 material_ambient = GLKVector4Make(1.0, 0.0, 1.0, 1.0);
-color4 material_diffuse = GLKVector4Make(1.0, 0.8, 0.0, 1.0);
-color4 material_specular = GLKVector4Make(1.0, 0.8, 0.0, 1.0);
-float material_shininess = 100.0;
+point4 at = GLKVector4Make(0.0, 0.0, 0.0, 1.0);
+point4 eye = GLKVector4Make(0.0, 0.0, 2.0, 1.0);
+vec4 up = GLKVector4Make(0.0, 1.0, 0.0, 0.0);
 
-point4 points[NumVertices];
-color4 quad_color[NumVertices];
-mat4 ctm;
+GLfloat left= -2.0, right=2.0, top=2.0, bottom= -2.0, nearZ= -4.0, farZ=4.0;
+float dr = 3.14159/180.0*5.0;
 
-void quad(int a, int b, int c, int d);
-void colorcube();
-void spinCube();
+// Vertex-generation
 
-// matrix functions
+// move a point to unit circle
 
-// Lighting calculations (flat-shading) done per-quad-vertex, in-app
-void quad(int a, int b, int c, int d) 
+point4 unit(const point4 &p)
 {
-    static int i =0; 
-    
-    // We need the normal to compute the diffuse term.
-    // Calculate normal of triangle plane using cross product of its vertices pairs
-    vec4 n1 = GLKVector4Normalize(
-                                  GLKVector4CrossProduct(
-                                            GLKVector4Subtract(
-                                                GLKMatrix4MultiplyVector4(ctm, vertices[b]), 
-                                                GLKMatrix4MultiplyVector4(ctm, vertices[a])), 
-                                            GLKVector4Subtract(
-                                                GLKMatrix4MultiplyVector4(ctm, vertices[c]), 
-                                                GLKMatrix4MultiplyVector4(ctm, vertices[b]))));
-    vec4 n = GLKVector4Make(n1.x, n1.y, n1.z, 0.0);
-    
-    // We need the halfway vector for the specular term
-    vec4 half = GLKVector4Normalize(GLKVector4Add(light_position, viewer));
-    
-    color4 ambient_color, diffuse_color, specular_color;
-    
-    // Each component of the ambient term is the product of the corresponding
-    // terms from the ambient light source and the material reflectivity.
-    ambient_color = GLKVector4Multiply(material_ambient, light_ambient);
-    
-    float dd = GLKVector4DotProduct(light_position, n);
-    
-    if(dd>0.0) diffuse_color = GLKVector4MultiplyScalar(GLKVector4Multiply(light_diffuse, material_diffuse), 
-                                                        dd);
-    else diffuse_color =  GLKVector4Make(0.0, 0.0, 0.0, 1.0);
-    
-    dd = GLKVector4DotProduct(half, n);
-    if(dd > 0.0) specular_color = GLKVector4MultiplyScalar(GLKVector4Multiply(light_specular, material_specular), 
-                                                           exp(material_shininess*log(dd)));
-    else specular_color = GLKVector4Make(0.0, 0.0, 0.0, 1.0);
-    
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[a]);
-    i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[b]);
-    i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[c]);
-    i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[a]);
-    i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[c]);
-    i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[d]);
-    i++;
-    i%=NumVertices;
+    point4 c;
+    double d=0.0;
+    for(int i=0; i<3; i++) d+=p.v[i]*p.v[i];
+    d=sqrt(d);
+    if(d > 0.0) for(int i=0; i<3; i++) c.v[i] = p.v[i]/d;
+    c.w = 1.0;
+    return c;
 }
 
-void colorcube()
+void triangle( point4  a, point4 b, point4 c)
 {
-    quad(1,0,3,2);
-    quad(2,3,7,6);
-    quad(3,0,4,7);
-    quad(6,5,1,2);
-    quad(4,5,6,7);
-    quad(5,4,0,1);
+    data[k]= a;
+    k++;
+    data[k] = b;
+    k++;
+    data[k] = c;
+    k++;
 }
 
-void spinCube()
+
+void divide_triangle(point4 a, point4 b, point4 c, int n)
 {
-    theta[axis] += 0.1;
-    if( theta[axis] > 360.0 ) theta[axis] -= 360.0;
+    point4 v1, v2, v3;
+    if(n>0)
+    {
+        v1 = unit(GLKVector4Add(a, b));
+        v2 = unit(GLKVector4Add(a, c));
+        v3 = unit(GLKVector4Add(b, c));   
+        divide_triangle(a ,v2, v1, n-1);
+        divide_triangle(c ,v3, v2, n-1);
+        divide_triangle(b ,v1, v3, n-1);
+        divide_triangle(v1 ,v2, v3, n-1);
+    }
+    else triangle(a, b, c);
 }
+
+void tetrahedron(int n)
+{
+    divide_triangle(v[0], v[1], v[2] , n);
+    divide_triangle(v[3], v[2], v[1], n );
+    divide_triangle(v[0], v[3], v[1], n );
+    divide_triangle(v[0], v[3], v[2], n );
+}
+
+
 
 @interface ViewController () {
     GLuint _program;
     
-    GLKMatrix4 _modelViewProjectionMatrix;
-    GLKMatrix3 _normalMatrix;
     float _rotation;
+    
+    GLKMatrix4 _modelViewProjectionMatrix;
     
     GLuint _vertexArray;
     GLuint _vertexBuffer;
@@ -194,6 +157,10 @@ void spinCube()
                                           initWithTarget:self action:@selector(handlePanGesture:)];
     [view addGestureRecognizer:panGesture];
     
+    UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]
+                                              initWithTarget:self action:@selector(handlePinchGesture:)];
+    [view addGestureRecognizer:pinchGesture];
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handleDoubleTap:)];
     tapGesture.numberOfTapsRequired = 2;
@@ -230,32 +197,26 @@ void spinCube()
 
 - (void)setupGL
 {
+    tetrahedron(N);
+    
     [EAGLContext setCurrentContext:self.context];
     
-    glEnable(GL_DEPTH_TEST);
-    
     [self loadShaders];
+    
+    glEnable(GL_DEPTH_TEST);
     
     glGenVertexArraysOES(1, &_vertexArray);
     glBindVertexArrayOES(_vertexArray);
     
     glGenBuffers(1, &_vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(points)+sizeof(quad_color), NULL, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(data), data, GL_STATIC_DRAW);
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-    glEnableVertexAttribArray(GLKVertexAttribColor);
-    glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(points)));
     
-    //glBindVertexArrayOES(0);
-    glClearColor(1.0, 1.0, 1.0, 1.0);
-    
-    // Setup ctm matrix
-    ctm.m00 = 1.0f;
-    ctm.m11 = 1.0f;
-    ctm.m22 = 1.0f;
-    ctm.m33 = 1.0f;
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glBindVertexArrayOES(0);
 }
 
 - (void)tearDownGL
@@ -277,31 +238,33 @@ void spinCube()
 
 - (void)update
 {
-    aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
-    spinCube(); // glutIdleFunc()
+    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
+    
+    theta += 0.01;
+    phi += 0.01;
+    if (theta >= 360.0) { theta = 0; }
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    // *** REQUIRED ***
-    glUseProgram(_program); 
+    glBindVertexArrayOES(_vertexArray);
     
-    // *** NOT NEEDED HERE ***
-    //glBindVertexArrayOES(_vertexArray);
+    // Render the object again with ES2
+    glUseProgram(_program);
     
-    ctm = GLKMatrix4Multiply(GLKMatrix4MakeXRotation(GLKMathDegreesToRadians(theta[0])), 
-                             GLKMatrix4Multiply(GLKMatrix4MakeYRotation(GLKMathDegreesToRadians(theta[1])),
-                                                GLKMatrix4MakeZRotation(GLKMathDegreesToRadians(theta[2]))));
+    GLKMatrix4 lookAt = GLKMatrix4MakeLookAt(radius*sin(theta)*cos(phi), 
+                                                      radius*sin(theta)*sin(phi), 
+                                                      radius*cos(theta), 
+                                                      0, 0, 0, 
+                                                      0, 1.0f, 0);
+    GLKMatrix4 ortho = GLKMatrix4MakeOrtho(left, right, bottom, top, nearZ, farZ);
+    _modelViewProjectionMatrix = GLKMatrix4Multiply(ortho, lookAt);
     
-    //ctm = RotateX(theta[0])*RotateY(theta[1])*RotateZ(theta[2]);
-    colorcube();
+    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewProjectionMatrix.m);
     
-    glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(points), points );
-    glBufferSubData( GL_ARRAY_BUFFER, sizeof(points), sizeof(quad_color), quad_color );
-    
-    glDrawArrays(GL_TRIANGLES, 0, NumVertices); 
+    for(int i = 0; i<M; i+=3) glDrawArrays(GL_LINE_LOOP, i, 3);
 }
 
 #pragma mark -  OpenGL ES 2 shader compilation
@@ -336,8 +299,7 @@ void spinCube()
     
     // Bind attribute locations.
     // This needs to be done prior to linking.
-    glBindAttribLocation(_program, GLKVertexAttribPosition, "position");
-    glBindAttribLocation(_program, GLKVertexAttribColor, "color");
+    glBindAttribLocation(_program, ATTRIB_VERTEX, "position");
     
     // Link program.
     if (![self linkProgram:_program]) {
@@ -358,6 +320,9 @@ void spinCube()
         
         return NO;
     }
+    
+    // Get uniform locations.
+    uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_program, "modelViewProjectionMatrix");
     
     // Release vertex and fragment shaders.
     if (vertShader) {
@@ -454,7 +419,19 @@ void spinCube()
 
 #pragma mark - UIGestureRecognizer event handlers
 
-// Spins the cube on pan gesture
+- (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender {
+    CGFloat factor = [(UIPinchGestureRecognizer *)sender scale];
+    
+    if (factor > 1.0) {
+        nearZ *= 1.1;
+        farZ *= 1.2;
+    } else {
+        nearZ *= 0.9;
+        farZ *= 0.9;
+    }
+    NSLog(@"pinch factor: %f", factor);
+}
+
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)sender {
     CGPoint translate = [sender translationInView:self.view];
     CGPoint vel = [sender velocityInView:self.view];
@@ -462,12 +439,30 @@ void spinCube()
     NSLog(@"pan velocity: %f, %f", vel.x, vel.y);
     
     if (translate.x > 0) {
-        axis = 0;
-    } 
-    if (translate.y > 0) {
-        axis = 1;
+        radius *= 1.1;
+        left *= 1.1;
+        right *= 1.1;
     } else {
-        axis = 2;
+        radius *= 0.9;
+        left *= 0.9;
+        right *= 0.9;
+    }
+    if (translate.y > 0) {
+        if (vel.x > 1) {
+            theta += dr;
+            bottom *= 1.1;
+        } else {
+            phi += dr;
+            top *= 1.1;
+        }
+    } else {
+        if (vel.x > 1) {
+            theta -= dr;
+            bottom *= 0.9;
+        } else {
+            phi -= dr;
+            top *= 0.9;
+        }
     }
     //theta += translate.x*.01f;
     //phi += translate.y*.01f;
@@ -475,7 +470,16 @@ void spinCube()
 
 - (IBAction)handleDoubleTap:(UITapGestureRecognizer *)sender {
     NSLog(@"double tag detected");
-    axis = 0;
+    left = -1.0;
+    right = 1.0;
+    bottom = -1.0;
+    top = 1.0;
+    nearZ = -4.0;
+    farZ = 4.0;
+    radius = 1.0;
+    theta = 0.0;
+    phi = 0.0;
 }
+
 
 @end
