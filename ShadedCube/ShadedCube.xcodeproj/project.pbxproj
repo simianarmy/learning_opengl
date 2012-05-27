@@ -1,0 +1,317 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9A330E96156F435A0004D3F6 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A330E95156F435A0004D3F6 /* UIKit.framework */; };
+		9A330E98156F435A0004D3F6 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A330E97156F435A0004D3F6 /* Foundation.framework */; };
+		9A330E9A156F435A0004D3F6 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A330E99156F435A0004D3F6 /* CoreGraphics.framework */; };
+		9A330E9C156F435A0004D3F6 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A330E9B156F435A0004D3F6 /* GLKit.framework */; };
+		9A330E9E156F435A0004D3F6 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A330E9D156F435A0004D3F6 /* OpenGLES.framework */; };
+		9A330EA4156F435A0004D3F6 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A330EA2156F435A0004D3F6 /* InfoPlist.strings */; };
+		9A330EA6156F435B0004D3F6 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A330EA5156F435B0004D3F6 /* main.m */; };
+		9A330EAA156F435B0004D3F6 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A330EA9156F435B0004D3F6 /* AppDelegate.m */; };
+		9A330EAC156F435B0004D3F6 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 9A330EAB156F435B0004D3F6 /* Shader.fsh */; };
+		9A330EAE156F435B0004D3F6 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 9A330EAD156F435B0004D3F6 /* Shader.vsh */; };
+		9A330EB1156F435B0004D3F6 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A330EB0156F435B0004D3F6 /* ViewController.mm */; };
+		9A330EB4156F435B0004D3F6 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A330EB2156F435B0004D3F6 /* ViewController_iPhone.xib */; };
+		9A330EB7156F435B0004D3F6 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A330EB5156F435B0004D3F6 /* ViewController_iPad.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9A330E91156F435A0004D3F6 /* ShadedCube.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ShadedCube.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A330E95156F435A0004D3F6 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9A330E97156F435A0004D3F6 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9A330E99156F435A0004D3F6 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9A330E9B156F435A0004D3F6 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		9A330E9D156F435A0004D3F6 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		9A330EA1156F435A0004D3F6 /* ShadedCube-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "ShadedCube-Info.plist"; sourceTree = "<group>"; };
+		9A330EA3156F435A0004D3F6 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9A330EA5156F435B0004D3F6 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9A330EA7156F435B0004D3F6 /* ShadedCube-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "ShadedCube-Prefix.pch"; sourceTree = "<group>"; };
+		9A330EA8156F435B0004D3F6 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9A330EA9156F435B0004D3F6 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9A330EAB156F435B0004D3F6 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
+		9A330EAD156F435B0004D3F6 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		9A330EAF156F435B0004D3F6 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9A330EB0156F435B0004D3F6 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		9A330EB3156F435B0004D3F6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
+		9A330EB6156F435B0004D3F6 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
+		9A330EBD156F43970004D3F6 /* Angel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Angel.h; sourceTree = "<group>"; };
+		9A330EBE156F43970004D3F6 /* mat.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mat.h; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9A330E8E156F435A0004D3F6 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A330E96156F435A0004D3F6 /* UIKit.framework in Frameworks */,
+				9A330E98156F435A0004D3F6 /* Foundation.framework in Frameworks */,
+				9A330E9A156F435A0004D3F6 /* CoreGraphics.framework in Frameworks */,
+				9A330E9C156F435A0004D3F6 /* GLKit.framework in Frameworks */,
+				9A330E9E156F435A0004D3F6 /* OpenGLES.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9A330E86156F435A0004D3F6 = {
+			isa = PBXGroup;
+			children = (
+				9A330E9F156F435A0004D3F6 /* ShadedCube */,
+				9A330E94156F435A0004D3F6 /* Frameworks */,
+				9A330E92156F435A0004D3F6 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9A330E92156F435A0004D3F6 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9A330E91156F435A0004D3F6 /* ShadedCube.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9A330E94156F435A0004D3F6 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9A330E95156F435A0004D3F6 /* UIKit.framework */,
+				9A330E97156F435A0004D3F6 /* Foundation.framework */,
+				9A330E99156F435A0004D3F6 /* CoreGraphics.framework */,
+				9A330E9B156F435A0004D3F6 /* GLKit.framework */,
+				9A330E9D156F435A0004D3F6 /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9A330E9F156F435A0004D3F6 /* ShadedCube */ = {
+			isa = PBXGroup;
+			children = (
+				9A330EBD156F43970004D3F6 /* Angel.h */,
+				9A330EBE156F43970004D3F6 /* mat.h */,
+				9A330EA8156F435B0004D3F6 /* AppDelegate.h */,
+				9A330EA9156F435B0004D3F6 /* AppDelegate.m */,
+				9A330EAB156F435B0004D3F6 /* Shader.fsh */,
+				9A330EAD156F435B0004D3F6 /* Shader.vsh */,
+				9A330EAF156F435B0004D3F6 /* ViewController.h */,
+				9A330EB0156F435B0004D3F6 /* ViewController.mm */,
+				9A330EB2156F435B0004D3F6 /* ViewController_iPhone.xib */,
+				9A330EB5156F435B0004D3F6 /* ViewController_iPad.xib */,
+				9A330EA0156F435A0004D3F6 /* Supporting Files */,
+			);
+			path = ShadedCube;
+			sourceTree = "<group>";
+		};
+		9A330EA0156F435A0004D3F6 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9A330EA1156F435A0004D3F6 /* ShadedCube-Info.plist */,
+				9A330EA2156F435A0004D3F6 /* InfoPlist.strings */,
+				9A330EA5156F435B0004D3F6 /* main.m */,
+				9A330EA7156F435B0004D3F6 /* ShadedCube-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9A330E90156F435A0004D3F6 /* ShadedCube */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A330EBA156F435B0004D3F6 /* Build configuration list for PBXNativeTarget "ShadedCube" */;
+			buildPhases = (
+				9A330E8D156F435A0004D3F6 /* Sources */,
+				9A330E8E156F435A0004D3F6 /* Frameworks */,
+				9A330E8F156F435A0004D3F6 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = ShadedCube;
+			productName = ShadedCube;
+			productReference = 9A330E91156F435A0004D3F6 /* ShadedCube.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9A330E88156F435A0004D3F6 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 9A330E8B156F435A0004D3F6 /* Build configuration list for PBXProject "ShadedCube" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9A330E86156F435A0004D3F6;
+			productRefGroup = 9A330E92156F435A0004D3F6 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9A330E90156F435A0004D3F6 /* ShadedCube */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9A330E8F156F435A0004D3F6 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A330EA4156F435A0004D3F6 /* InfoPlist.strings in Resources */,
+				9A330EAC156F435B0004D3F6 /* Shader.fsh in Resources */,
+				9A330EAE156F435B0004D3F6 /* Shader.vsh in Resources */,
+				9A330EB4156F435B0004D3F6 /* ViewController_iPhone.xib in Resources */,
+				9A330EB7156F435B0004D3F6 /* ViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9A330E8D156F435A0004D3F6 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A330EA6156F435B0004D3F6 /* main.m in Sources */,
+				9A330EAA156F435B0004D3F6 /* AppDelegate.m in Sources */,
+				9A330EB1156F435B0004D3F6 /* ViewController.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9A330EA2156F435A0004D3F6 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A330EA3156F435A0004D3F6 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9A330EB2156F435B0004D3F6 /* ViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A330EB3156F435B0004D3F6 /* en */,
+			);
+			name = ViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		9A330EB5156F435B0004D3F6 /* ViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A330EB6156F435B0004D3F6 /* en */,
+			);
+			name = ViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9A330EB8156F435B0004D3F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9A330EB9156F435B0004D3F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9A330EBB156F435B0004D3F6 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShadedCube/ShadedCube-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "ShadedCube/ShadedCube-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9A330EBC156F435B0004D3F6 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "ShadedCube/ShadedCube-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "ShadedCube/ShadedCube-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9A330E8B156F435A0004D3F6 /* Build configuration list for PBXProject "ShadedCube" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A330EB8156F435B0004D3F6 /* Debug */,
+				9A330EB9156F435B0004D3F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A330EBA156F435B0004D3F6 /* Build configuration list for PBXNativeTarget "ShadedCube" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A330EBB156F435B0004D3F6 /* Debug */,
+				9A330EBC156F435B0004D3F6 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9A330E88156F435A0004D3F6 /* Project object */;
+}

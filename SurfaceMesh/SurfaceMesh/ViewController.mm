@@ -35,30 +35,6 @@ enum
 typedef GLKVector4 color4;
 typedef GLKVector4 point4;
 
-// Vertices of a unit cube centered at origin, sides aligned with axes
-GLKVector4 vertices[8] = {
-    GLKVector4Make( -0.5, -0.5,  0.5, 1.0 ),
-    GLKVector4Make( -0.5,  0.5,  0.5, 1.0 ),
-    GLKVector4Make(  0.5,  0.5,  0.5, 1.0 ),
-    GLKVector4Make(  0.5, -0.5,  0.5, 1.0 ),
-    GLKVector4Make( -0.5, -0.5, -0.5, 1.0 ),
-    GLKVector4Make( -0.5,  0.5, -0.5, 1.0 ),
-    GLKVector4Make(  0.5,  0.5, -0.5, 1.0 ),
-    GLKVector4Make(  0.5, -0.5, -0.5, 1.0 )
-};
-
-// RGBA colors
-GLKVector4 vertex_colors[8] = {
-    GLKVector4Make( 0.0, 0.0, 0.0, 1.0 ),  // black
-    GLKVector4Make( 1.0, 0.0, 0.0, 1.0 ),  // red
-    GLKVector4Make( 1.0, 1.0, 0.0, 1.0 ),  // yellow
-    GLKVector4Make( 0.0, 1.0, 0.0, 1.0 ),  // green
-    GLKVector4Make( 0.0, 0.0, 1.0, 1.0 ),  // blue
-    GLKVector4Make( 1.0, 0.0, 1.0, 1.0 ),  // magenta
-    GLKVector4Make( 1.0, 1.0, 1.0, 1.0 ),  // white
-    GLKVector4Make( 0.0, 1.0, 1.0, 1.0 )   // cyan
-};
-
 // Viewing transformation parameters
 
 GLfloat radius = 1.0f;
@@ -144,6 +120,7 @@ void gen_triangles()
 - (BOOL)validateProgram:(GLuint)prog;
 - (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender;
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)sender;
+- (IBAction)handleDoubleTap:(UITapGestureRecognizer *)sender;
 @end
 
 @implementation ViewController
@@ -175,6 +152,12 @@ void gen_triangles()
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]
                                               initWithTarget:self action:@selector(handlePinchGesture:)];
     [view addGestureRecognizer:pinchGesture];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handleDoubleTap:)];
+    tapGesture.numberOfTapsRequired = 2;
+    [view addGestureRecognizer:tapGesture];
+    
 }
 
 - (void)viewDidUnload
@@ -252,21 +235,62 @@ void gen_triangles()
     CGFloat factor = [(UIPinchGestureRecognizer *)sender scale];
     
     if (factor > 1.0) {
-        radius *= 2.0;
+        zNear *= 1.1;
+        zFar *= 1.2;
     } else {
-        radius *= 0.5;
+        zNear *= 0.9;
+        zFar *= 0.9;
     }
-//    radius *= factor;
-    if (radius >= 6) radius = 6;
-    if (radius <= 1) radius = 1;
-    NSLog(@"pinch factor: %f, radius: %f", factor, radius);
+    NSLog(@"pinch factor: %f", factor);
 }
 
 - (IBAction)handlePanGesture:(UIPanGestureRecognizer *)sender {
     CGPoint translate = [sender translationInView:self.view];
+    CGPoint vel = [sender velocityInView:self.view];
     NSLog(@"pan point: %f, %f", translate.x, translate.y);
-    theta += translate.x*.01f;
-    phi += translate.y*.01f;
+    NSLog(@"pan velocity: %f, %f", vel.x, vel.y);
+    
+    if (translate.x > 0) {
+        radius *= 2.0;
+        left *= 1.1;
+        right *= 1.1;
+    } else {
+        radius *= 0.5;
+        left *= 0.9;
+        right *= 0.9;
+    }
+    if (translate.y > 0) {
+        if (vel.x > 1) {
+            theta += dr;
+            bottom *= 1.1;
+        } else {
+            phi += dr;
+            top *= 1.1;
+        }
+    } else {
+        if (vel.x > 1) {
+            theta -= dr;
+            bottom *= 0.9;
+        } else {
+            phi -= dr;
+            top *= 0.9;
+        }
+    }
+    //theta += translate.x*.01f;
+    //phi += translate.y*.01f;
+}
+
+- (IBAction)handleDoubleTap:(UITapGestureRecognizer *)sender {
+    NSLog(@"double tag detected");
+    left = -1.0;
+    right = 1.0;
+    bottom = -1.0;
+    top = 1.0;
+    zNear = 0.5;
+    zFar = 30.0;
+    radius = 1.0;
+    theta = 0.0;
+    phi = 0.0;
 }
 
 #pragma mark - GLKView and GLKViewController delegate methods
