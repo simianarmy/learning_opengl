@@ -1,6 +1,7 @@
 //
 //  ViewController.m
-//  VertShaderLighting object with lighting calculations in the vertex shader
+//  VertShaderLighting object with lighting calculations in the vertex shader.
+//  FAIL FAIL FAIL - LIGHTING DOESN'T WORK
 //
 //  Created by Marc Mauger on 5/27/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
