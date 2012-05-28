@@ -1,8 +1,8 @@
 //
 //  main.m
-//  VertShaderLighting
+//  VertShaderCube
 //
-//  Created by Marc Mauger on 5/27/12.
+//  Created by Marc Mauger on 5/28/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 

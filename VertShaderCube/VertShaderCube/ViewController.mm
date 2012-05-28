@@ -1,9 +1,8 @@
 //
 //  ViewController.m
-//  VertShaderLighting object with lighting calculations in the vertex shader.
-//  FAIL FAIL FAIL - LIGHTING DOESN'T WORK
+//  VertShaderCube
 //
-//  Created by Marc Mauger on 5/27/12.
+//  Created by Marc Mauger on 5/28/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -127,7 +126,7 @@ colorcube()
     [super viewDidLoad];
     
     self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-
+    
     if (!self.context) {
         NSLog(@"Failed to create ES context");
     }
@@ -140,6 +139,10 @@ colorcube()
     [self setupGL];
     
     // Setup gesture recognizers with event handlers
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]
+                                          initWithTarget:self action:@selector(handlePanGesture:)];
+    [view addGestureRecognizer:panGesture];
+
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]
                                               initWithTarget:self action:@selector(handlePinchGesture:)];
     [view addGestureRecognizer:pinchGesture];
@@ -148,7 +151,7 @@ colorcube()
                                           initWithTarget:self action:@selector(handleDoubleTap:)];
     tapGesture.numberOfTapsRequired = 2;
     [view addGestureRecognizer:tapGesture];
-
+    
 }
 
 - (void)viewDidUnload
@@ -160,7 +163,7 @@ colorcube()
     if ([EAGLContext currentContext] == self.context) {
         [EAGLContext setCurrentContext:nil];
     }
-	self.context = nil;
+    self.context = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -196,13 +199,14 @@ colorcube()
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(points), points);
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(points), sizeof(normals), normals);
     
+    // set up vertex arrays
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     glEnableVertexAttribArray(GLKVertexAttribNormal);
     glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(points)));
     
     // Initialize shader lighting parameters
-    point4 light_position = GLKVector4Make( 1.0, 0.0, -1.0, 0.0 );
+    point4 light_position = GLKVector4Make( 0.0, 0.0, -1.0, 0.0 );
     color4 light_ambient = GLKVector4Make( 0.2, 0.2, 0.2, 1.0 );
     color4 light_diffuse = GLKVector4Make( 1.0, 1.0, 1.0, 1.0 );
     color4 light_specular = GLKVector4Make( 1.0, 1.0, 1.0, 1.0 );
@@ -215,6 +219,8 @@ colorcube()
     color4 ambient_product = GLKVector4Multiply(light_ambient, material_ambient);
     color4 diffuse_product = GLKVector4Multiply(light_diffuse, material_diffuse);
     color4 specular_product = GLKVector4Multiply(light_specular, material_specular);
+    
+    glUseProgram(_program);
     
     glUniform4fv( glGetUniformLocation(_program, "AmbientProduct"),
                  1, ambient_product.v );
@@ -231,10 +237,10 @@ colorcube()
     
     glEnable( GL_DEPTH_TEST );
     
-    //glShadeModel(GL_FLAT);
+    glShadeModel(GL_FLAT);
     
     glClearColor( 1.0, 1.0, 1.0, 1.0 ); 
-
+    
     
     //glBindVertexArrayOES(0);
 }
@@ -260,8 +266,9 @@ colorcube()
 {
     float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
     if (moved || (aspect != _aspect)) {
-        GLKMatrix4 projectionMatrix = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(45.0f), aspect, nearZ, farZ);
-        glUniformMatrix4fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, projectionMatrix.m);
+        glUseProgram(_program);
+        GLKMatrix4 proj = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(45.0f), aspect, nearZ, farZ);
+        glUniformMatrix4fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, proj.m);
         _aspect = aspect;
     }
     Theta[Axis] += 0.5;
@@ -279,11 +286,11 @@ colorcube()
     // Render the object again with ES2
     glUseProgram(_program);
     
-    const vec3 view_pos = GLKVector3Make(0.0, 0.0, 2.0);
+    const vec3 view_pos = GLKVector3Make(0.0, 0.0, 3.0);
     GLKMatrix4 tran = GLKMatrix4MakeTranslation(-view_pos.x, -view_pos.y, -view_pos.z);
     GLKMatrix4 rot = GLKMatrix4Multiply(GLKMatrix4Multiply(
-                                            GLKMatrix4MakeXRotation(GLKMathDegreesToRadians(Theta[Xaxis])), 
-                                            GLKMatrix4MakeYRotation(GLKMathDegreesToRadians(Theta[Yaxis]))),
+                                                           GLKMatrix4MakeXRotation(GLKMathDegreesToRadians(Theta[Xaxis])), 
+                                                           GLKMatrix4MakeYRotation(GLKMathDegreesToRadians(Theta[Yaxis]))),
                                         GLKMatrix4MakeZRotation(GLKMathDegreesToRadians(Theta[Zaxis])));
     GLKMatrix4 mv = GLKMatrix4Multiply(tran, rot);
     
@@ -445,6 +452,22 @@ colorcube()
 }
 
 #pragma mark - UIGestureRecognizer event handlers
+
+- (IBAction)handlePanGesture:(UIPanGestureRecognizer *)sender {
+    CGPoint translate = [sender translationInView:self.view];
+    CGPoint vel = [sender velocityInView:self.view];
+    NSLog(@"pan point: %f, %f", translate.x, translate.y);
+    NSLog(@"pan velocity: %f, %f", vel.x, vel.y);
+    if (translate.x > 0) {
+        Axis = Xaxis;
+    } 
+    if (translate.y > 0) {
+        Axis = Yaxis;
+    } else {
+        Axis = Zaxis;
+    }
+    moved = true;
+}
 
 - (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender {
     CGFloat factor = [(UIPinchGestureRecognizer *)sender scale];

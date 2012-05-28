@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'VertShaderLighting' target in the 'VertShaderLighting' project
+// Prefix header for all source files of the 'VertShaderCube' target in the 'VertShaderCube' project
 //
 
 #import <Availability.h>
