@@ -1,0 +1,313 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		9A27C0301574539C002ABC69 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A27C02F1574539C002ABC69 /* UIKit.framework */; };
+		9A27C0321574539C002ABC69 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A27C0311574539C002ABC69 /* Foundation.framework */; };
+		9A27C0341574539C002ABC69 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A27C0331574539C002ABC69 /* CoreGraphics.framework */; };
+		9A27C0361574539C002ABC69 /* GLKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A27C0351574539C002ABC69 /* GLKit.framework */; };
+		9A27C0381574539C002ABC69 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9A27C0371574539C002ABC69 /* OpenGLES.framework */; };
+		9A27C03E1574539C002ABC69 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9A27C03C1574539C002ABC69 /* InfoPlist.strings */; };
+		9A27C0401574539C002ABC69 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A27C03F1574539C002ABC69 /* main.m */; };
+		9A27C0441574539C002ABC69 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 9A27C0431574539C002ABC69 /* AppDelegate.m */; };
+		9A27C0461574539C002ABC69 /* Shader.fsh in Resources */ = {isa = PBXBuildFile; fileRef = 9A27C0451574539C002ABC69 /* Shader.fsh */; };
+		9A27C0481574539C002ABC69 /* Shader.vsh in Resources */ = {isa = PBXBuildFile; fileRef = 9A27C0471574539C002ABC69 /* Shader.vsh */; };
+		9A27C04B1574539C002ABC69 /* ViewController.mm in Sources */ = {isa = PBXBuildFile; fileRef = 9A27C04A1574539C002ABC69 /* ViewController.mm */; };
+		9A27C04E1574539C002ABC69 /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A27C04C1574539C002ABC69 /* ViewController_iPhone.xib */; };
+		9A27C0511574539C002ABC69 /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = 9A27C04F1574539C002ABC69 /* ViewController_iPad.xib */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		9A27C02B1574539C002ABC69 /* TetraSphereFragmentShading.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TetraSphereFragmentShading.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		9A27C02F1574539C002ABC69 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9A27C0311574539C002ABC69 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9A27C0331574539C002ABC69 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		9A27C0351574539C002ABC69 /* GLKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = GLKit.framework; path = System/Library/Frameworks/GLKit.framework; sourceTree = SDKROOT; };
+		9A27C0371574539C002ABC69 /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		9A27C03B1574539C002ABC69 /* TetraSphereFragmentShading-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "TetraSphereFragmentShading-Info.plist"; sourceTree = "<group>"; };
+		9A27C03D1574539C002ABC69 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		9A27C03F1574539C002ABC69 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		9A27C0411574539C002ABC69 /* TetraSphereFragmentShading-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "TetraSphereFragmentShading-Prefix.pch"; sourceTree = "<group>"; };
+		9A27C0421574539C002ABC69 /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		9A27C0431574539C002ABC69 /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		9A27C0451574539C002ABC69 /* Shader.fsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.fsh; path = Shaders/Shader.fsh; sourceTree = "<group>"; };
+		9A27C0471574539C002ABC69 /* Shader.vsh */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.glsl; name = Shader.vsh; path = Shaders/Shader.vsh; sourceTree = "<group>"; };
+		9A27C0491574539C002ABC69 /* ViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ViewController.h; sourceTree = "<group>"; };
+		9A27C04A1574539C002ABC69 /* ViewController.mm */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.objcpp; path = ViewController.mm; sourceTree = "<group>"; };
+		9A27C04D1574539C002ABC69 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
+		9A27C0501574539C002ABC69 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		9A27C0281574539C002ABC69 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A27C0301574539C002ABC69 /* UIKit.framework in Frameworks */,
+				9A27C0321574539C002ABC69 /* Foundation.framework in Frameworks */,
+				9A27C0341574539C002ABC69 /* CoreGraphics.framework in Frameworks */,
+				9A27C0361574539C002ABC69 /* GLKit.framework in Frameworks */,
+				9A27C0381574539C002ABC69 /* OpenGLES.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		9A27C0201574539C002ABC69 = {
+			isa = PBXGroup;
+			children = (
+				9A27C0391574539C002ABC69 /* TetraSphereFragmentShading */,
+				9A27C02E1574539C002ABC69 /* Frameworks */,
+				9A27C02C1574539C002ABC69 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		9A27C02C1574539C002ABC69 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				9A27C02B1574539C002ABC69 /* TetraSphereFragmentShading.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		9A27C02E1574539C002ABC69 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9A27C02F1574539C002ABC69 /* UIKit.framework */,
+				9A27C0311574539C002ABC69 /* Foundation.framework */,
+				9A27C0331574539C002ABC69 /* CoreGraphics.framework */,
+				9A27C0351574539C002ABC69 /* GLKit.framework */,
+				9A27C0371574539C002ABC69 /* OpenGLES.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9A27C0391574539C002ABC69 /* TetraSphereFragmentShading */ = {
+			isa = PBXGroup;
+			children = (
+				9A27C0421574539C002ABC69 /* AppDelegate.h */,
+				9A27C0431574539C002ABC69 /* AppDelegate.m */,
+				9A27C0451574539C002ABC69 /* Shader.fsh */,
+				9A27C0471574539C002ABC69 /* Shader.vsh */,
+				9A27C0491574539C002ABC69 /* ViewController.h */,
+				9A27C04A1574539C002ABC69 /* ViewController.mm */,
+				9A27C04C1574539C002ABC69 /* ViewController_iPhone.xib */,
+				9A27C04F1574539C002ABC69 /* ViewController_iPad.xib */,
+				9A27C03A1574539C002ABC69 /* Supporting Files */,
+			);
+			path = TetraSphereFragmentShading;
+			sourceTree = "<group>";
+		};
+		9A27C03A1574539C002ABC69 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9A27C03B1574539C002ABC69 /* TetraSphereFragmentShading-Info.plist */,
+				9A27C03C1574539C002ABC69 /* InfoPlist.strings */,
+				9A27C03F1574539C002ABC69 /* main.m */,
+				9A27C0411574539C002ABC69 /* TetraSphereFragmentShading-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		9A27C02A1574539C002ABC69 /* TetraSphereFragmentShading */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9A27C0541574539C002ABC69 /* Build configuration list for PBXNativeTarget "TetraSphereFragmentShading" */;
+			buildPhases = (
+				9A27C0271574539C002ABC69 /* Sources */,
+				9A27C0281574539C002ABC69 /* Frameworks */,
+				9A27C0291574539C002ABC69 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = TetraSphereFragmentShading;
+			productName = TetraSphereFragmentShading;
+			productReference = 9A27C02B1574539C002ABC69 /* TetraSphereFragmentShading.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9A27C0221574539C002ABC69 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 9A27C0251574539C002ABC69 /* Build configuration list for PBXProject "TetraSphereFragmentShading" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 9A27C0201574539C002ABC69;
+			productRefGroup = 9A27C02C1574539C002ABC69 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				9A27C02A1574539C002ABC69 /* TetraSphereFragmentShading */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		9A27C0291574539C002ABC69 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A27C03E1574539C002ABC69 /* InfoPlist.strings in Resources */,
+				9A27C0461574539C002ABC69 /* Shader.fsh in Resources */,
+				9A27C0481574539C002ABC69 /* Shader.vsh in Resources */,
+				9A27C04E1574539C002ABC69 /* ViewController_iPhone.xib in Resources */,
+				9A27C0511574539C002ABC69 /* ViewController_iPad.xib in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		9A27C0271574539C002ABC69 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				9A27C0401574539C002ABC69 /* main.m in Sources */,
+				9A27C0441574539C002ABC69 /* AppDelegate.m in Sources */,
+				9A27C04B1574539C002ABC69 /* ViewController.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		9A27C03C1574539C002ABC69 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A27C03D1574539C002ABC69 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9A27C04C1574539C002ABC69 /* ViewController_iPhone.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A27C04D1574539C002ABC69 /* en */,
+			);
+			name = ViewController_iPhone.xib;
+			sourceTree = "<group>";
+		};
+		9A27C04F1574539C002ABC69 /* ViewController_iPad.xib */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9A27C0501574539C002ABC69 /* en */,
+			);
+			name = ViewController_iPad.xib;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		9A27C0521574539C002ABC69 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		9A27C0531574539C002ABC69 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9A27C0551574539C002ABC69 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TetraSphereFragmentShading/TetraSphereFragmentShading-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "TetraSphereFragmentShading/TetraSphereFragmentShading-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		9A27C0561574539C002ABC69 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "TetraSphereFragmentShading/TetraSphereFragmentShading-Prefix.pch";
+				"GCC_THUMB_SUPPORT[arch=armv6]" = "";
+				INFOPLIST_FILE = "TetraSphereFragmentShading/TetraSphereFragmentShading-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9A27C0251574539C002ABC69 /* Build configuration list for PBXProject "TetraSphereFragmentShading" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A27C0521574539C002ABC69 /* Debug */,
+				9A27C0531574539C002ABC69 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		9A27C0541574539C002ABC69 /* Build configuration list for PBXNativeTarget "TetraSphereFragmentShading" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9A27C0551574539C002ABC69 /* Debug */,
+				9A27C0561574539C002ABC69 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9A27C0221574539C002ABC69 /* Project object */;
+}

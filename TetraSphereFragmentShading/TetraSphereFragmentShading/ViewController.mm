@@ -1,8 +1,8 @@
 //
 //  ViewController.m
-//  VertShaderCube
+//  TetraSphereFragmentShading
 //
-//  Created by Marc Mauger on 5/28/12.
+//  Created by Marc Mauger on 5/27/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
@@ -27,72 +27,93 @@ enum
     NUM_ATTRIBUTES
 };
 
+const int NumTimesToSubdivide = 5;
+const int NumTriangles        = 4096;  // (4 faces)^(NumTimesToSubdivide + 1)
+const int NumVertices         = 3 * NumTriangles;
+
+GLsizei w=512, h=512;
+
 typedef GLKVector3 vec3;
 typedef GLKVector4 vec4;
 typedef GLKVector4 point4;
 typedef GLKVector4 color4;
 typedef GLKMatrix4 mat4;
 
-const int NumVertices = 36;
-
-// Array of rotation angles (in degrees) for each coordinate axis
-enum { Xaxis = 0, Yaxis = 1, Zaxis = 2, NumAxes = 3 };
-int      Axis = Xaxis;
-GLfloat  Theta[NumAxes] = { 0.0, 0.0, 0.0 };
-float nearZ = 0.5f;
-float farZ = 3.0f;
-bool moved = false;
-
 point4 points[NumVertices];
 vec3   normals[NumVertices];
 
-// Vertices of a unit cube centered at origin, sides aligned with axes
-point4  vertices[8] = { 
-    GLKVector4Make(-0.5,-0.5,0.5, 1.0),
-    GLKVector4Make(-0.5,0.5,0.5, 1.0),
-    GLKVector4Make(0.5,0.5,0.5, 1.0), 
-    GLKVector4Make(0.5,-0.5,0.5, 1.0), 
-    GLKVector4Make(-0.5,-0.5,-0.5, 1.0),
-    GLKVector4Make(-0.5,0.5,-0.5, 1.0), 
-    GLKVector4Make(0.5,0.5,-0.5, 1.0), 
-    GLKVector4Make(0.5,-0.5,-0.5, 1.0)};
+float theta = 0.0;
+float phi = 0.0;
+float radius = 2.0;
+static int k =0;
 
-// quad generates two triangles for each face and assigns colors
-//    to the vertices
+point4 at = GLKVector4Make(0.0, 0.0, 0.0, 1.0);
+point4 eye = GLKVector4Make(0.0, 0.0, 2.0, 1.0);
+vec4 up = GLKVector4Make(0.0, 1.0, 0.0, 0.0);
+
+GLfloat left= -2.0, right=2.0, top=2.0, bottom= -2.0, nearZ= -4.0, farZ=4.0;
+float dr = 3.14159/180.0*5.0;
 
 int Index = 0;
 
-void
-quad( int a, int b, int c, int d )
+// Vertex-generation
+
+// move a point to unit circle
+
+point4 unit(const point4 &p)
 {
-    // Initialize temporary vectors along the quad's edge to
-    //   compute its face normal 
-    vec4 u = GLKVector4Subtract(vertices[b], vertices[a]);
-    vec4 v = GLKVector4Subtract(vertices[c], vertices[b]);
-    
-    vec3 normal = GLKVector3MakeWithArray(GLKVector4Normalize(GLKVector4CrossProduct(u, v)).v);
-    
-    normals[Index] = normal; points[Index] = vertices[a]; Index++;
-    normals[Index] = normal; points[Index] = vertices[b]; Index++;
-    normals[Index] = normal; points[Index] = vertices[c]; Index++;
-    normals[Index] = normal; points[Index] = vertices[a]; Index++;
-    normals[Index] = normal; points[Index] = vertices[c]; Index++;
-    normals[Index] = normal; points[Index] = vertices[d]; Index++;
+    point4 c;
+    double d=0.0;
+    for(int i=0; i<3; i++) d+=p.v[i]*p.v[i];
+    d=sqrt(d);
+    if(d > 0.0) for(int i=0; i<3; i++) c.v[i] = p.v[i]/d;
+    c.w = 1.0;
+    return c;
 }
 
-//----------------------------------------------------------------------------
-
-// generate 12 triangles: 36 vertices and 36 colors
-void
-colorcube()
+void triangle( point4  a, point4 b, point4 c)
 {
-    quad( 1, 0, 3, 2 );
-    quad( 2, 3, 7, 6 );
-    quad( 3, 0, 4, 7 );
-    quad( 6, 5, 1, 2 );
-    quad( 4, 5, 6, 7 );
-    quad( 5, 4, 0, 1 );
+    vec3  normal = GLKVector3MakeWithArray(GLKVector4Normalize(GLKVector4CrossProduct(
+                                        GLKVector4Subtract(b, a), 
+                                        GLKVector4Subtract(c, b))).v);
+    
+    normals[Index] = normal;  points[Index] = a;  Index++;
+    normals[Index] = normal;  points[Index] = b;  Index++;
+    normals[Index] = normal;  points[Index] = c;  Index++;
 }
+
+
+void divide_triangle(point4 a, point4 b, point4 c, int n)
+{
+    point4 v1, v2, v3;
+    if(n>0)
+    {
+        v1 = unit(GLKVector4Add(a, b));
+        v2 = unit(GLKVector4Add(a, c));
+        v3 = unit(GLKVector4Add(b, c));   
+        divide_triangle(a ,v1, v2, n-1);
+        divide_triangle(c ,v2, v3, n-1);
+        divide_triangle(b ,v3, v1, n-1);
+        divide_triangle(v1 ,v3, v2, n-1);
+    }
+    else triangle(a, b, c);
+}
+
+void tetrahedron(int n)
+{
+    // four equally spaced points on the unit circle
+    
+    point4 v[4]= {GLKVector4Make(0.0, 0.0, 1.0, 1.0), 
+        GLKVector4Make(0.0, 0.942809, -0.333333, 1.0),
+        GLKVector4Make(-0.816497, -0.471405, -0.333333, 1.0),
+        GLKVector4Make(0.816497, -0.471405, -0.333333, 1.0)};
+
+    divide_triangle(v[0], v[1], v[2] , n);
+    divide_triangle(v[3], v[2], v[1], n );
+    divide_triangle(v[0], v[3], v[1], n );
+    divide_triangle(v[0], v[2], v[3], n );
+}
+
 
 
 @interface ViewController () {
@@ -100,6 +121,8 @@ colorcube()
     
     float _rotation;
     float _aspect;
+    
+    GLKMatrix4 _modelViewProjectionMatrix;
     
     GLuint _vertexArray;
     GLuint _vertexBuffer;
@@ -142,7 +165,7 @@ colorcube()
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc]
                                           initWithTarget:self action:@selector(handlePanGesture:)];
     [view addGestureRecognizer:panGesture];
-
+    
     UIPinchGestureRecognizer *pinchGesture = [[UIPinchGestureRecognizer alloc]
                                               initWithTarget:self action:@selector(handlePinchGesture:)];
     [view addGestureRecognizer:pinchGesture];
@@ -151,7 +174,6 @@ colorcube()
                                           initWithTarget:self action:@selector(handleDoubleTap:)];
     tapGesture.numberOfTapsRequired = 2;
     [view addGestureRecognizer:tapGesture];
-    
 }
 
 - (void)viewDidUnload
@@ -184,11 +206,13 @@ colorcube()
 
 - (void)setupGL
 {
-    colorcube();
+    tetrahedron(NumTimesToSubdivide);
     
     [EAGLContext setCurrentContext:self.context];
     
     [self loadShaders];
+    
+    glEnable(GL_DEPTH_TEST);
     
     glGenVertexArraysOES(1, &_vertexArray);
     glBindVertexArrayOES(_vertexArray);
@@ -199,22 +223,21 @@ colorcube()
     glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(points), points);
     glBufferSubData(GL_ARRAY_BUFFER, sizeof(points), sizeof(normals), normals);
     
-    // set up vertex arrays
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     glEnableVertexAttribArray(GLKVertexAttribNormal);
     glVertexAttribPointer(GLKVertexAttribNormal, 3, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(points)));
     
     // Initialize shader lighting parameters
-    point4 light_position = GLKVector4Make( 0.0, 0.0, -1.0, 0.0 );
+    point4 light_position = GLKVector4Make( -3.0, 1.0, 2.0, 0.0 );
     color4 light_ambient = GLKVector4Make( 0.2, 0.2, 0.2, 1.0 );
     color4 light_diffuse = GLKVector4Make( 1.0, 1.0, 1.0, 1.0 );
     color4 light_specular = GLKVector4Make( 1.0, 1.0, 1.0, 1.0 );
     
     color4 material_ambient = GLKVector4Make( 1.0, 0.0, 1.0, 1.0 );
     color4 material_diffuse = GLKVector4Make( 1.0, 0.8, 0.0, 1.0 );
-    color4 material_specular = GLKVector4Make( 1.0, 0.8, 0.0, 1.0 );
-    float  material_shininess = 100.0;
+    color4 material_specular = GLKVector4Make( 1.0, 0.0, 1.0, 1.0 );
+    float  material_shininess = 5.0;
     
     color4 ambient_product = GLKVector4Multiply(light_ambient, material_ambient);
     color4 diffuse_product = GLKVector4Multiply(light_diffuse, material_diffuse);
@@ -238,13 +261,9 @@ colorcube()
                 material_shininess );
     
     glEnable( GL_DEPTH_TEST );
-    
-    glShadeModel(GL_FLAT);
-    
-    glClearColor( 1.0, 1.0, 1.0, 1.0 ); 
-    
-    
-    //glBindVertexArrayOES(0);
+
+    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+    glBindVertexArrayOES(0);
 }
 
 - (void)tearDownGL
@@ -267,38 +286,44 @@ colorcube()
 - (void)update
 {
     float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
-    if (moved || (aspect != _aspect)) {
+    if (aspect != _aspect) {
+        GLfloat left = -2.0, right = 2.0;
+        GLfloat top = 2.0, bottom = -2.0;
+        GLfloat zNear = -20.0, zFar = 20.0;
+        if ( aspect > 1.0 ) {
+            left *= aspect;
+            right *= aspect;
+        }
+        else {
+            top /= aspect;
+            bottom /= aspect;
+        }
         glUseProgram(_program);
-        GLKMatrix4 proj = GLKMatrix4MakePerspective(GLKMathDegreesToRadians(45.0f), aspect, nearZ, farZ);
-        glUniformMatrix4fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, proj.m);
+        GLKMatrix4 proj = GLKMatrix4MakeOrtho(left, right, bottom, top, zNear, zFar);
+        glUniformMatrix4fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, GL_FALSE, proj.m);
         _aspect = aspect;
     }
-    Theta[Axis] += 0.5;
-    
-    if ( Theta[Axis] > 360.0 ) {
-        Theta[Axis] -= 360.0;
-    }
-    _rotation += self.timeSinceLastUpdate * 0.5f;
+    _rotation += 0.1;
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
+    glBindVertexArrayOES(_vertexArray);
+    
     // Render the object again with ES2
     glUseProgram(_program);
     
-    const vec3 view_pos = GLKVector3Make(0.0, 0.0, 3.0);
-    GLKMatrix4 tran = GLKMatrix4MakeTranslation(-view_pos.x, -view_pos.y, -view_pos.z);
-    GLKMatrix4 rot = GLKMatrix4Multiply(GLKMatrix4Multiply(
-                                                           GLKMatrix4MakeXRotation(GLKMathDegreesToRadians(Theta[Xaxis])), 
-                                                           GLKMatrix4MakeYRotation(GLKMathDegreesToRadians(Theta[Yaxis]))),
-                                        GLKMatrix4MakeZRotation(GLKMathDegreesToRadians(Theta[Zaxis])));
-    GLKMatrix4 mv = GLKMatrix4Multiply(tran, rot);
+    GLKMatrix4 lookAt = GLKMatrix4MakeLookAt(0.0, 0.0, 2.0,
+                                             0.0, 0.0, 0.0,
+                                             0.0, 1.0, 0.0);
+    GLKMatrix4 rot = GLKMatrix4MakeYRotation(GLKMathDegreesToRadians(_rotation));
+    GLKMatrix4 mv = GLKMatrix4Multiply(lookAt, rot);
     
     glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, mv.m);
     
-    glDrawArrays(GL_TRIANGLES, 0, NumVertices);
+    glDrawArrays( GL_TRIANGLES, 0, NumVertices );
 }
 
 #pragma mark -  OpenGL ES 2 shader compilation
@@ -455,41 +480,67 @@ colorcube()
 
 #pragma mark - UIGestureRecognizer event handlers
 
-- (IBAction)handlePanGesture:(UIPanGestureRecognizer *)sender {
-    CGPoint translate = [sender translationInView:self.view];
-    CGPoint vel = [sender velocityInView:self.view];
-    NSLog(@"pan point: %f, %f", translate.x, translate.y);
-    NSLog(@"pan velocity: %f, %f", vel.x, vel.y);
-    if (translate.x > 0) {
-        Axis = Xaxis;
-    } 
-    if (translate.y > 0) {
-        Axis = Yaxis;
-    } else {
-        Axis = Zaxis;
-    }
-    moved = true;
-}
-
 - (IBAction)handlePinchGesture:(UIGestureRecognizer *)sender {
     CGFloat factor = [(UIPinchGestureRecognizer *)sender scale];
     
     if (factor > 1.0) {
         nearZ *= 1.1;
-        farZ *= 1.1;
+        farZ *= 1.2;
     } else {
         nearZ *= 0.9;
         farZ *= 0.9;
     }
-    moved = true;
     NSLog(@"pinch factor: %f", factor);
+}
+
+- (IBAction)handlePanGesture:(UIPanGestureRecognizer *)sender {
+    CGPoint translate = [sender translationInView:self.view];
+    CGPoint vel = [sender velocityInView:self.view];
+    NSLog(@"pan point: %f, %f", translate.x, translate.y);
+    NSLog(@"pan velocity: %f, %f", vel.x, vel.y);
+    
+    if (translate.x > 0) {
+        radius *= 1.1;
+        left *= 1.1;
+        right *= 1.1;
+    } else {
+        radius *= 0.9;
+        left *= 0.9;
+        right *= 0.9;
+    }
+    if (translate.y > 0) {
+        if (vel.x > 1) {
+            theta += dr;
+            bottom *= 1.1;
+        } else {
+            phi += dr;
+            top *= 1.1;
+        }
+    } else {
+        if (vel.x > 1) {
+            theta -= dr;
+            bottom *= 0.9;
+        } else {
+            phi -= dr;
+            top *= 0.9;
+        }
+    }
+    //theta += translate.x*.01f;
+    //phi += translate.y*.01f;
 }
 
 - (IBAction)handleDoubleTap:(UITapGestureRecognizer *)sender {
     NSLog(@"double tag detected");
-    nearZ = 0.5f;
-    farZ = 3.5f;
-    moved = true;
+    left = -1.0;
+    right = 1.0;
+    bottom = -1.0;
+    top = 1.0;
+    nearZ = -4.0;
+    farZ = 4.0;
+    radius = 1.0;
+    theta = 0.0;
+    phi = 0.0;
 }
+
 
 @end
