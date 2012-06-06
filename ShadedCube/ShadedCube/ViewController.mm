@@ -36,98 +36,81 @@ typedef GLKVector4 color4;
 typedef GLKMatrix4 mat4;
 
 const int NumVertices = 36;
+const int  TextureSize  = 64;
 
-int axis = 0;
-float theta[3] = {0.0, 0.0, 0.0};
-float aspect;
+// Array of rotation angles (in degrees) for each coordinate axis
+enum { Xaxis = 0, Yaxis = 1, Zaxis = 2, NumAxes = 3 };
+int      Axis = Xaxis;
+int currentTexture = 0;
+GLfloat  Theta[NumAxes] = { 0.0, 0.0, 0.0 };
+GLuint   theta;
 
 // Vertices of a unit cube centered at origin, sides aligned with axes
-point4  vertices[8] = {GLKVector4Make(-0.5,-0.5,0.5, 1.0),
-    GLKVector4Make(-0.5,0.5,0.5, 1.0),
-    GLKVector4Make(0.5,0.5,0.5, 1.0), 
-    GLKVector4Make(0.5,-0.5,0.5, 1.0), 
-    GLKVector4Make(-0.5,-0.5,-0.5, 1.0),
-    GLKVector4Make(-0.5,0.5,-0.5, 1.0), 
-    GLKVector4Make(0.5,0.5,-0.5, 1.0), 
-    GLKVector4Make(0.5,-0.5,-0.5, 1.0)};
+point4  vertices[8] = {
+    GLKVector4Make( -0.5, -0.5,  0.5, 1.0 ),
+    GLKVector4Make( -0.5,  0.5,  0.5, 1.0 ),
+    GLKVector4Make(  0.5,  0.5,  0.5, 1.0 ),
+    GLKVector4Make(  0.5, -0.5,  0.5, 1.0 ),
+    GLKVector4Make( -0.5, -0.5, -0.5, 1.0 ),
+    GLKVector4Make( -0.5,  0.5, -0.5, 1.0 ),
+    GLKVector4Make(  0.5,  0.5, -0.5, 1.0 ),
+    GLKVector4Make(  0.5, -0.5, -0.5, 1.0 )
+};
 
-vec4 viewer = GLKVector4Make(0.0, 0.0, 1.0, 0.0);
-point4 light_position = GLKVector4Make(0.0, 0.0, -1.0, 0.0);
-color4 light_ambient = GLKVector4Make(0.2, 0.2, 0.2, 1.0);
-color4 light_diffuse = GLKVector4Make(1.0, 1.0, 1.0, 1.0);
-color4 light_specular = GLKVector4Make(1.0, 1.0, 1.0, 1.0);
-
-color4 material_ambient = GLKVector4Make(1.0, 0.0, 1.0, 1.0);
-color4 material_diffuse = GLKVector4Make(1.0, 0.8, 0.0, 1.0);
-color4 material_specular = GLKVector4Make(1.0, 0.8, 0.0, 1.0);
-float material_shininess = 100.0;
+color4 colors[8] = {
+    GLKVector4Make( 0.0, 0.0, 0.0, 1.0 ),  // black
+    GLKVector4Make( 1.0, 0.0, 0.0, 1.0 ),  // red
+    GLKVector4Make( 1.0, 1.0, 0.0, 1.0 ),  // yellow
+    GLKVector4Make( 0.0, 1.0, 0.0, 1.0 ),  // green
+    GLKVector4Make( 0.0, 0.0, 1.0, 1.0 ),  // blue
+    GLKVector4Make( 1.0, 0.0, 1.0, 1.0 ),  // magenta
+    GLKVector4Make( 0.0, 1.0, 1.0, 1.0 ),  // white
+    GLKVector4Make( 1.0, 1.0, 1.0, 1.0 )   // cyan
+};
 
 point4 points[NumVertices];
 color4 quad_color[NumVertices];
-mat4 ctm;
+GLKVector2 tex_coords[NumVertices];
+
+// Texture objects and storage for texture image
+GLuint textures[2];
+
+GLubyte image[TextureSize][TextureSize][3];
+GLubyte image2[TextureSize][TextureSize][3];
 
 void quad(int a, int b, int c, int d);
 void colorcube();
 void spinCube();
 
-// matrix functions
 
-// Lighting calculations (flat-shading) done per-quad-vertex, in-app
 void quad(int a, int b, int c, int d) 
 {
     static int i =0; 
     
-    // We need the normal to compute the diffuse term.
-    // Calculate normal of triangle plane using cross product of its vertices pairs
-    vec4 n1 = GLKVector4Normalize(
-                                  GLKVector4CrossProduct(
-                                            GLKVector4Subtract(
-                                                GLKMatrix4MultiplyVector4(ctm, vertices[b]), 
-                                                GLKMatrix4MultiplyVector4(ctm, vertices[a])), 
-                                            GLKVector4Subtract(
-                                                GLKMatrix4MultiplyVector4(ctm, vertices[c]), 
-                                                GLKMatrix4MultiplyVector4(ctm, vertices[b]))));
-    vec4 n = GLKVector4Make(n1.x, n1.y, n1.z, 0.0);
-    
-    // We need the halfway vector for the specular term
-    vec4 half = GLKVector4Normalize(GLKVector4Add(light_position, viewer));
-    
-    color4 ambient_color, diffuse_color, specular_color;
-    
-    // Each component of the ambient term is the product of the corresponding
-    // terms from the ambient light source and the material reflectivity.
-    ambient_color = GLKVector4Multiply(material_ambient, light_ambient);
-    
-    float dd = GLKVector4DotProduct(light_position, n);
-    
-    if(dd>0.0) diffuse_color = GLKVector4MultiplyScalar(GLKVector4Multiply(light_diffuse, material_diffuse), 
-                                                        dd);
-    else diffuse_color =  GLKVector4Make(0.0, 0.0, 0.0, 1.0);
-    
-    dd = GLKVector4DotProduct(half, n);
-    if(dd > 0.0) specular_color = GLKVector4MultiplyScalar(GLKVector4Multiply(light_specular, material_specular), 
-                                                           exp(material_shininess*log(dd)));
-    else specular_color = GLKVector4Make(0.0, 0.0, 0.0, 1.0);
-    
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[a]);
+    quad_color[i] = colors[a];
+    points[i] = vertices[a];
+    tex_coords[i] = GLKVector2Make(0.0, 0.0);
     i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[b]);
+    quad_color[i] = colors[a];
+    points[i] = vertices[b];
+    tex_coords[i] = GLKVector2Make(0.0, 1.0);
     i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[c]);
+    quad_color[i] = colors[a];
+    points[i] = vertices[c];
+    tex_coords[i] = GLKVector2Make(1.0, 1.0);
     i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[a]);
+    quad_color[i] = colors[a];
+    points[i] = vertices[a];
+    tex_coords[i] = GLKVector2Make(0.0, 0.0);
     i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[c]);
+    quad_color[i] = colors[a];
+    points[i] = vertices[c];
+    tex_coords[i] = GLKVector2Make(1.0, 1.0);
     i++;
-    quad_color[i] = GLKVector4Add(ambient_color, diffuse_color);
-    points[i] = GLKMatrix4MultiplyVector4(ctm, vertices[d]);
+    quad_color[i] = colors[a];
+    points[i] = vertices[d];
+    tex_coords[i] = GLKVector2Make(1.0, 0.0);
     i++;
-    i%=NumVertices;
 }
 
 void colorcube()
@@ -142,8 +125,11 @@ void colorcube()
 
 void spinCube()
 {
-    theta[axis] += 0.1;
-    if( theta[axis] > 360.0 ) theta[axis] -= 360.0;
+    Theta[Axis] += 0.2;
+    
+    if ( Theta[Axis] > 360.0 ) {
+        Theta[Axis] -= 360.0;
+    }
 }
 
 @interface ViewController () {
@@ -230,32 +216,85 @@ void spinCube()
 
 - (void)setupGL
 {
+    colorcube();
+    
+    // Create a checkerboard pattern
+    for ( int i = 0; i < TextureSize; i++ ) {
+        for ( int j = 0; j < TextureSize; j++ ) {
+            GLubyte c = (((i & 0x8) == 0) ^ ((j & 0x8)  == 0)) * 255;
+            NSLog(@"texture at %d, %d = %d", i, j, c);
+            image[i][j][0]  = c;
+            image[i][j][1]  = c;
+            image[i][j][2]  = c;
+            image2[i][j][0] = c;
+            image2[i][j][1] = 0;
+            image2[i][j][2] = c;
+        }
+    }
     [EAGLContext setCurrentContext:self.context];
     
     glEnable(GL_DEPTH_TEST);
     
-    [self loadShaders];
+    // Initialize texture objects
+    glGenTextures( 2, textures );
+    
+    glBindTexture( GL_TEXTURE_2D, textures[0] );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, TextureSize, TextureSize, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, image );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    
+    glBindTexture( GL_TEXTURE_2D, textures[1] );
+    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, TextureSize, TextureSize, 0,
+                 GL_RGB, GL_UNSIGNED_BYTE, image2 );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
+    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
+    
+    glActiveTexture( GL_TEXTURE0 );
+    glBindTexture( GL_TEXTURE_2D, textures[0] );
     
     glGenVertexArraysOES(1, &_vertexArray);
     glBindVertexArrayOES(_vertexArray);
     
+    GLintptr offset;
+    GLsizeiptr size = sizeof(points) + sizeof(quad_color) + sizeof(tex_coords);
+    
     glGenBuffers(1, &_vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(points)+sizeof(quad_color), NULL, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_STATIC_DRAW);
+    offset = 0;
+    glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(points), points);
+    offset += sizeof(points);
+    glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(quad_color), quad_color);
+    offset += sizeof(quad_color);
+    glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(tex_coords), tex_coords);
+    
+    [self loadShaders];
+    
+    glUseProgram(_program); 
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
     glVertexAttribPointer(GLKVertexAttribPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
     glEnableVertexAttribArray(GLKVertexAttribColor);
     glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(points)));
+    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
+    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, 
+                          BUFFER_OFFSET(sizeof(points)+sizeof(colors)));
     
+    // Set the value of the fragment shader texture sampler variable
+    //   ("texture") to the the appropriate texture unit. In this case,
+    //   zero, for GL_TEXTURE0 which was previously set by calling
+    //   glActiveTexture().
+    glUniform1i( glGetUniformLocation(_program, "texture"), 0 );
+    
+    theta = glGetUniformLocation(_program, "theta" );
+
     //glBindVertexArrayOES(0);
     glClearColor(1.0, 1.0, 1.0, 1.0);
-    
-    // Setup ctm matrix
-    ctm.m00 = 1.0f;
-    ctm.m11 = 1.0f;
-    ctm.m22 = 1.0f;
-    ctm.m33 = 1.0f;
 }
 
 - (void)tearDownGL
@@ -277,7 +316,6 @@ void spinCube()
 
 - (void)update
 {
-    aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
     spinCube(); // glutIdleFunc()
 }
 
@@ -291,17 +329,9 @@ void spinCube()
     // *** NOT NEEDED HERE ***
     //glBindVertexArrayOES(_vertexArray);
     
-    ctm = GLKMatrix4Multiply(GLKMatrix4MakeXRotation(GLKMathDegreesToRadians(theta[0])), 
-                             GLKMatrix4Multiply(GLKMatrix4MakeYRotation(GLKMathDegreesToRadians(theta[1])),
-                                                GLKMatrix4MakeZRotation(GLKMathDegreesToRadians(theta[2]))));
+    glUniform3fv( theta, 1, Theta );
     
-    //ctm = RotateX(theta[0])*RotateY(theta[1])*RotateZ(theta[2]);
-    colorcube();
-    
-    glBufferSubData( GL_ARRAY_BUFFER, 0, sizeof(points), points );
-    glBufferSubData( GL_ARRAY_BUFFER, sizeof(points), sizeof(quad_color), quad_color );
-    
-    glDrawArrays(GL_TRIANGLES, 0, NumVertices); 
+    glDrawArrays( GL_TRIANGLES, 0, NumVertices );
 }
 
 #pragma mark -  OpenGL ES 2 shader compilation
@@ -338,6 +368,7 @@ void spinCube()
     // This needs to be done prior to linking.
     glBindAttribLocation(_program, GLKVertexAttribPosition, "position");
     glBindAttribLocation(_program, GLKVertexAttribColor, "color");
+    glBindAttribLocation(_program, GLKVertexAttribTexCoord0, "texcoord");
     
     // Link program.
     if (![self linkProgram:_program]) {
@@ -462,12 +493,12 @@ void spinCube()
     NSLog(@"pan velocity: %f, %f", vel.x, vel.y);
     
     if (translate.x > 0) {
-        axis = 0;
+        Axis = Xaxis;
     } 
     if (translate.y > 0) {
-        axis = 1;
+        Axis = Yaxis;
     } else {
-        axis = 2;
+        Axis = Zaxis;
     }
     //theta += translate.x*.01f;
     //phi += translate.y*.01f;
@@ -475,7 +506,8 @@ void spinCube()
 
 - (IBAction)handleDoubleTap:(UITapGestureRecognizer *)sender {
     NSLog(@"double tag detected");
-    axis = 0;
+    glBindTexture( GL_TEXTURE_2D, textures[currentTexture++] );
+    currentTexture %= 2;
 }
 
 @end
