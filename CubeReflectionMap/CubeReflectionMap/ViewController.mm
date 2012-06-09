@@ -213,14 +213,9 @@ void spinCube()
 {
     checkGLError();
     colorcube();
- /*   
-    GLubyte red[3] = {255, 0, 0};
-    GLubyte green[3] = {0, 255, 0};
-    GLubyte blue[3] = {0, 0, 255};
-    GLubyte cyan[3] = {0, 255, 255};
-    GLubyte magenta[3] = {255, 0, 255};
-    GLubyte yellow[3] = {255, 255, 0};
-*/
+    
+    // IOS REQUIRES TEXTURE DIMENSIONS IN POWERS OF 2 ONLY!
+    // 2X2 RGB TEXTURE = 12 BYTES
     GLuint tw = 2, th = 2;
     GLubyte red[] = {255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0};
     GLubyte green[] = {0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0};
@@ -237,13 +232,14 @@ void spinCube()
     
     glEnable(GL_DEPTH_TEST);
     checkGLError();
-    // DEPRECATED IN ES2
+    // *** DEPRECATED IN ES2
     // glEnable(GL_TEXTURE_CUBE_MAP);
     // checkGLError();
     
     // Initialize texture objects
     glGenTextures( 1, &textures[0] );
     checkGLError();
+    // *** ABSOLUTELY DO NOT USE GL_TEXTURE0!! IT WILL FAIL SILENTLY ***
     glActiveTexture(GL_TEXTURE1);
     checkGLError();
     glBindTexture( GL_TEXTURE_CUBE_MAP, textures[0] );
@@ -278,10 +274,6 @@ void spinCube()
     glEnableVertexAttribArray(GLKVertexAttribNormal);
     glVertexAttribPointer(GLKVertexAttribNormal, 4, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeof(points)));
     checkGLError();
-    
-    //glUniformMatrix4fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _projectionMatrix.m);
-    
-    /* set up uniform parameter */
     
     // Set the value of the fragment shader texture sampler variable
     //   ("texture") to the the appropriate texture unit. In this case,
