@@ -1,8 +1,8 @@
 //
 //  ViewController.h
-//  CubeTextureMap
+//  CubeReflectionMap
 //
-//  Created by Marc Mauger on 6/5/12.
+//  Created by Marc Mauger on 6/6/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 

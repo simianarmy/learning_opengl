@@ -1,5 +1,5 @@
 //
-// Prefix header for all source files of the 'CubeTextureMap' target in the 'CubeTextureMap' project
+// Prefix header for all source files of the 'CubeReflectionMap' target in the 'CubeReflectionMap' project
 //
 
 #import <Availability.h>

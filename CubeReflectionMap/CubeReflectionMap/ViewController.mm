@@ -1,13 +1,12 @@
 //
 //  ViewController.m
-//  ShadedCube - texture-mapped cube
+//  ShadedCube - reflection-map demo
 //
 //  Created by Marc Mauger on 5/24/12.
 //  Copyright (c) 2012 __MyCompanyName__. All rights reserved.
 //
 
 #import "ViewController.h"
-#include "Angel.h"
 
 #define BUFFER_OFFSET(i) ((char *)NULL + (i))
 
@@ -36,7 +35,6 @@ typedef GLKVector4 color4;
 typedef GLKMatrix4 mat4;
 
 const int NumVertices = 36;
-const int  TextureSize  = 64;
 
 // Array of rotation angles (in degrees) for each coordinate axis
 enum { Xaxis = 0, Yaxis = 1, Zaxis = 2, NumAxes = 3 };
@@ -57,60 +55,55 @@ point4  vertices[8] = {
     GLKVector4Make(  0.5, -0.5, -0.5, 1.0 )
 };
 
-color4 colors[8] = {
-    GLKVector4Make( 0.0, 0.0, 0.0, 1.0 ),  // black
-    GLKVector4Make( 1.0, 0.0, 0.0, 1.0 ),  // red
-    GLKVector4Make( 1.0, 1.0, 0.0, 1.0 ),  // yellow
-    GLKVector4Make( 0.0, 1.0, 0.0, 1.0 ),  // green
-    GLKVector4Make( 0.0, 0.0, 1.0, 1.0 ),  // blue
-    GLKVector4Make( 1.0, 0.0, 1.0, 1.0 ),  // magenta
-    GLKVector4Make( 0.0, 1.0, 1.0, 1.0 ),  // white
-    GLKVector4Make( 1.0, 1.0, 1.0, 1.0 )   // cyan
-};
-
 point4 points[NumVertices];
-color4 quad_color[NumVertices];
-GLKVector2 tex_coords[NumVertices];
+point4 normals[NumVertices];
 
 // Texture objects and storage for texture image
-GLuint textures[2];
-
-GLubyte image[TextureSize][TextureSize][3];
-GLubyte image2[TextureSize][TextureSize][3];
+GLuint textures[1];
 
 void quad(int a, int b, int c, int d);
 void colorcube();
 void spinCube();
+void checkGLError();
 
+void checkGLError()
+{
+    GLenum err;
+    if ((err = glGetError()) != GL_NO_ERROR ) {
+        NSLog(@"oh noes GL error: %d!", err);
+    }
+
+}
 
 void quad(int a, int b, int c, int d) 
 {
     static int i =0; 
     
-    quad_color[i] = colors[a];
+    vec4 normal4 = GLKVector4CrossProduct(GLKVector4Subtract(vertices[b], vertices[a]),
+                    GLKVector4Subtract(vertices[c], vertices[a]));
+    
+    vec4 normal = GLKVector4Make(normal4.x, normal4.y, normal4.z, 0.0);
+    
+    
+    normals[i] = normal;
     points[i] = vertices[a];
-    tex_coords[i] = GLKVector2Make(0.0, 0.0);
     i++;
-    quad_color[i] = colors[a];
+    normals[i] = normal;
     points[i] = vertices[b];
-    tex_coords[i] = GLKVector2Make(0.0, 1.0);
     i++;
-    quad_color[i] = colors[a];
+    normals[i] = normal;
     points[i] = vertices[c];
-    tex_coords[i] = GLKVector2Make(1.0, 1.0);
     i++;
-    quad_color[i] = colors[a];
+    normals[i] = normal;
     points[i] = vertices[a];
-    tex_coords[i] = GLKVector2Make(0.0, 0.0);
     i++;
-    quad_color[i] = colors[a];
+    normals[i] = normal;
     points[i] = vertices[c];
-    tex_coords[i] = GLKVector2Make(1.0, 1.0);
     i++;
-    quad_color[i] = colors[a];
+    normals[i] = normal;
     points[i] = vertices[d];
-    tex_coords[i] = GLKVector2Make(1.0, 0.0);
     i++;
+    i%=NumVertices;
 }
 
 void colorcube()
@@ -135,9 +128,11 @@ void spinCube()
 @interface ViewController () {
     GLuint _program;
     
-    GLKMatrix4 _modelViewProjectionMatrix;
-    GLKMatrix3 _normalMatrix;
+    GLKMatrix4 _modelViewMatrix;
+    GLKMatrix4 _projectionMatrix;
+    
     float _rotation;
+    float _aspect;
     
     GLuint _vertexArray;
     GLuint _vertexBuffer;
@@ -164,7 +159,7 @@ void spinCube()
     [super viewDidLoad];
     
     self.context = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES2];
-
+    
     if (!self.context) {
         NSLog(@"Failed to create ES context");
     }
@@ -195,7 +190,7 @@ void spinCube()
     if ([EAGLContext currentContext] == self.context) {
         [EAGLContext setCurrentContext:nil];
     }
-	self.context = nil;
+    self.context = nil;
 }
 
 - (void)didReceiveMemoryWarning
@@ -216,84 +211,87 @@ void spinCube()
 
 - (void)setupGL
 {
+    checkGLError();
     colorcube();
-    
-    // Create a checkerboard pattern
-    for ( int i = 0; i < TextureSize; i++ ) {
-        for ( int j = 0; j < TextureSize; j++ ) {
-            GLubyte c = (((i & 0x8) == 0) ^ ((j & 0x8)  == 0)) * 255;
-            NSLog(@"texture at %d, %d = %d", i, j, c);
-            image[i][j][0]  = c;
-            image[i][j][1]  = c;
-            image[i][j][2]  = c;
-            image2[i][j][0] = c;
-            image2[i][j][1] = 0;
-            image2[i][j][2] = c;
-        }
-    }
+ /*   
+    GLubyte red[3] = {255, 0, 0};
+    GLubyte green[3] = {0, 255, 0};
+    GLubyte blue[3] = {0, 0, 255};
+    GLubyte cyan[3] = {0, 255, 255};
+    GLubyte magenta[3] = {255, 0, 255};
+    GLubyte yellow[3] = {255, 255, 0};
+*/
+    GLuint tw = 2, th = 2;
+    GLubyte red[] = {255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0};
+    GLubyte green[] = {0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255, 0};
+    GLubyte blue[] = {0, 0, 255, 0, 0, 255, 0, 0, 255, 0, 0, 255};
+    GLubyte cyan[] = {0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255};
+    GLubyte magenta[] = {255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0, 255};
+    GLubyte yellow[] = {255, 255, 0, 255, 255, 0, 255, 255, 0, 255, 255, 0};
+
     [EAGLContext setCurrentContext:self.context];
     
+    [self loadShaders];
+    glUseProgram(_program); 
+    checkGLError();
+    
     glEnable(GL_DEPTH_TEST);
+    checkGLError();
+    // DEPRECATED IN ES2
+    // glEnable(GL_TEXTURE_CUBE_MAP);
+    // checkGLError();
     
     // Initialize texture objects
-    glGenTextures( 2, textures );
+    glGenTextures( 1, &textures[0] );
+    checkGLError();
+    glActiveTexture(GL_TEXTURE1);
+    checkGLError();
+    glBindTexture( GL_TEXTURE_CUBE_MAP, textures[0] );
+    checkGLError();
     
-    glBindTexture( GL_TEXTURE_2D, textures[0] );
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, TextureSize, TextureSize, 0,
-                 GL_RGB, GL_UNSIGNED_BYTE, image );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-    
-    glBindTexture( GL_TEXTURE_2D, textures[1] );
-    glTexImage2D( GL_TEXTURE_2D, 0, GL_RGB, TextureSize, TextureSize, 0,
-                 GL_RGB, GL_UNSIGNED_BYTE, image2 );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST );
-    glTexParameterf( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST );
-    
-    glActiveTexture( GL_TEXTURE0 );
-    glBindTexture( GL_TEXTURE_2D, textures[0] );
-    
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X ,0,GL_RGB,tw,th,0,GL_RGB,GL_UNSIGNED_BYTE, red);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_X ,0,GL_RGB,tw,th,0,GL_RGB,GL_UNSIGNED_BYTE, green);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Y ,0,GL_RGB,tw,th,0,GL_RGB,GL_UNSIGNED_BYTE, blue);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Y ,0,GL_RGB,tw,th,0,GL_RGB,GL_UNSIGNED_BYTE, cyan);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_Z ,0,GL_RGB,tw,th,0,GL_RGB,GL_UNSIGNED_BYTE, magenta);
+    glTexImage2D(GL_TEXTURE_CUBE_MAP_NEGATIVE_Z ,0,GL_RGB,tw,th,0,GL_RGB,GL_UNSIGNED_BYTE, yellow);
+    checkGLError();
+    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+    //glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_LINEAR); 
+    checkGLError();
+
     glGenVertexArraysOES(1, &_vertexArray);
     glBindVertexArrayOES(_vertexArray);
-    
-    GLintptr offset;
-    GLsizeiptr size = sizeof(points) + sizeof(quad_color) + sizeof(tex_coords);
+    checkGLError();
     
     glGenBuffers(1, &_vertexBuffer);
     glBindBuffer(GL_ARRAY_BUFFER, _vertexBuffer);
-    glBufferData(GL_ARRAY_BUFFER, size, NULL, GL_STATIC_DRAW);
-    offset = 0;
-    glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(points), points);
-    offset += sizeof(points);
-    glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(quad_color), quad_color);
-    offset += sizeof(quad_color);
-    glBufferSubData(GL_ARRAY_BUFFER, offset, sizeof(tex_coords), tex_coords);
-    
-    [self loadShaders];
-    
-    glUseProgram(_program); 
+    glBufferData(GL_ARRAY_BUFFER, sizeof(points) + sizeof(normals), NULL, GL_DYNAMIC_DRAW);
+    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(points), points);
+    glBufferSubData(GL_ARRAY_BUFFER, sizeof(points), sizeof(normals), normals);
+    checkGLError();
     
     glEnableVertexAttribArray(GLKVertexAttribPosition);
-    glVertexAttribPointer(GLKVertexAttribPosition, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(0));
-    glEnableVertexAttribArray(GLKVertexAttribColor);
-    glVertexAttribPointer(GLKVertexAttribColor, 4, GL_FLOAT, GL_FALSE, 0, BUFFER_OFFSET(sizeof(points)));
-    glEnableVertexAttribArray(GLKVertexAttribTexCoord0);
-    glVertexAttribPointer(GLKVertexAttribTexCoord0, 2, GL_FLOAT, GL_FALSE, 0, 
-                          BUFFER_OFFSET(sizeof(points)+sizeof(colors)));
+    glVertexAttribPointer(GLKVertexAttribPosition, 4, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(0));
+    glEnableVertexAttribArray(GLKVertexAttribNormal);
+    glVertexAttribPointer(GLKVertexAttribNormal, 4, GL_FLOAT, GL_TRUE, 0, BUFFER_OFFSET(sizeof(points)));
+    checkGLError();
+    
+    //glUniformMatrix4fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, 0, _projectionMatrix.m);
+    
+    /* set up uniform parameter */
     
     // Set the value of the fragment shader texture sampler variable
     //   ("texture") to the the appropriate texture unit. In this case,
     //   zero, for GL_TEXTURE0 which was previously set by calling
     //   glActiveTexture().
-    glUniform1i( glGetUniformLocation(_program, "texture"), 0 );
+    glUniform1i( glGetUniformLocation(_program, "texMap"), textures[0] );
+    checkGLError();
     
-    theta = glGetUniformLocation(_program, "theta" );
-
     //glBindVertexArrayOES(0);
+        
     glClearColor(1.0, 1.0, 1.0, 1.0);
 }
 
@@ -316,22 +314,50 @@ void spinCube()
 
 - (void)update
 {
-    spinCube(); // glutIdleFunc()
+    spinCube(); 
+    
+    // Adjust projection matrix if aspect ratio changed
+    float aspect = fabsf(self.view.bounds.size.width / self.view.bounds.size.height);
+    if (aspect != _aspect) {
+        GLfloat left = -2.0, right = 2.0;
+        GLfloat top = 2.0, bottom = -2.0;
+        GLfloat zNear = -20.0, zFar = 20.0;
+        if ( aspect > 1.0 ) {
+            left *= aspect;
+            right *= aspect;
+        }
+        else {
+            top /= aspect;
+            bottom /= aspect;
+        }
+        glUseProgram(_program);
+        _projectionMatrix = GLKMatrix4MakeOrtho(left, right, bottom, top, zNear, zFar);
+        glUniformMatrix4fv(uniforms[UNIFORM_NORMAL_MATRIX], 1, GL_FALSE, _projectionMatrix.m);
+        checkGLError();
+        _aspect = aspect;
+    }
 }
 
 - (void)glkView:(GLKView *)view drawInRect:(CGRect)rect
 {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    glClearColor(1.0, 1.0, 1.0, 1.0);
     
     // *** REQUIRED ***
     glUseProgram(_program); 
     
+    _modelViewMatrix = GLKMatrix4Multiply(GLKMatrix4Multiply(
+                                        GLKMatrix4MakeXRotation(GLKMathDegreesToRadians(Theta[0])),
+                                          GLKMatrix4MakeYRotation(GLKMathDegreesToRadians(Theta[1]))),
+                                          GLKMatrix4MakeZRotation(GLKMathDegreesToRadians(Theta[2])));
+    
+    glUniformMatrix4fv(uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX], 1, 0, _modelViewMatrix.m);
+    checkGLError();
     // *** NOT NEEDED HERE ***
     //glBindVertexArrayOES(_vertexArray);
-    
-    glUniform3fv( theta, 1, Theta );
-    
+        
     glDrawArrays( GL_TRIANGLES, 0, NumVertices );
+    checkGLError();
 }
 
 #pragma mark -  OpenGL ES 2 shader compilation
@@ -367,8 +393,7 @@ void spinCube()
     // Bind attribute locations.
     // This needs to be done prior to linking.
     glBindAttribLocation(_program, GLKVertexAttribPosition, "position");
-    glBindAttribLocation(_program, GLKVertexAttribColor, "color");
-    glBindAttribLocation(_program, GLKVertexAttribTexCoord0, "texcoord");
+    glBindAttribLocation(_program, GLKVertexAttribNormal, "normal");
     
     // Link program.
     if (![self linkProgram:_program]) {
@@ -389,6 +414,10 @@ void spinCube()
         
         return NO;
     }
+    
+    // Get uniform locations.
+    uniforms[UNIFORM_MODELVIEWPROJECTION_MATRIX] = glGetUniformLocation(_program, "ModelView");
+    uniforms[UNIFORM_NORMAL_MATRIX] = glGetUniformLocation(_program, "Projection");
     
     // Release vertex and fragment shaders.
     if (vertShader) {
